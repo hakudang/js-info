@@ -100,7 +100,7 @@ set.add(dang); // bị bỏ qua vì trùng, không lỗi
 
 console.log(set.size); // 3
 for (let user of set) {
-    console.log(user.name); // Dang, Pete, Mary
+  console.log(user.name); // Dang, Pete, Mary
 }
 
 let arr = ["apple", "banana", "apple"];
@@ -111,9 +111,33 @@ console.log(uniqueArr); // ["apple", "banana"]
 
 let fruits = new Set(["apple", "banana", "orange"]);
 for (let fruit of fruits) {
-    console.log(fruit); // apple, banana, orange
+  console.log(fruit); // apple, banana, orange
 }
 
 fruits.forEach((value, valueAgain, set) => {
-    console.log(`${value} (again: ${valueAgain})`); // value và valueAgain giống nhau
+  console.log(`${value} (again: ${valueAgain})`); // value và valueAgain giống nhau
 });
+
+// III Bài tập
+
+// Bài tập 1 : lọc các thành phần mảng duy nhất
+
+// Question :
+// Viết hàm unique(arr) nhận vào một mảng arr và trả về một mảng mới chỉ chứa các phần tử duy nhất từ arr, loại bỏ các phần tử trùng lặp.
+// Phương pháp sử dụng Set để loại bỏ các phần tử trùng lặp trong mảng rất hiệu quả vì Set chỉ lưu trữ các giá trị duy nhất.
+
+// Answer :
+function unique(arr) {
+  /* your code */
+  // Cách 1 : Sử dụng Set để loại bỏ phần tử trùng lặp
+  // return [...new Set(arr)];
+
+  // Cách 2 : sử dụng Array.from để chuyển Set thành mảng
+  return Array.from(new Set(arr));
+}
+
+let values = ["Hare", "Krishna", "Hare", "Krishna",
+  "Krishna", "Krishna", "Hare", "Hare", ":-O"
+];
+
+console.log(unique(values)); // Hare, Krishna, :-O
