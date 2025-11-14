@@ -2,6 +2,20 @@
  * WeakMap và WeakSet trong JavaScript
  * WeakMap - tương tự Map nhưng chỉ chấp nhận key là object và key là weakly held (yếu)
  * WeakSet - tương tự Set nhưng chỉ chứa các object và các object là weakly held
+ * lý do sử dụng WeakMap và WeakSet:
+ * - Giúp tránh rò rỉ bộ nhớ (memory leaks) khi làm việc với các object tạm thời
+ * - Tự động dọn dẹp các entry khi object key không còn tham chiếu nào
+ * - Thích hợp để lưu trữ dữ liệu tạm thời gắn với object mà không cần quản lý thủ công
+ * - Hạn chế: không thể iterate được và không thể lấy kích thước (size)
+ * 
+ *  I. WeakMap trong JavaScript
+ * II. WeakSet trong JavaScript
+ * III. Bài tập ứng dụng với WeakMap và WeakSet
+ * - Bài tập 1 : Ứng dụng WeakMap để Cache sao cho giảm chi phí CPU tính toán
+ * - Bài tập 2  : Ứng dụng WeakMap để Cache độ dài chuỗi
+ * - Bài tập 3  : Ứng dụng WeakMap để Cache kết quả xử lý DOM
+ * - Bài tập 4 : Ứng dụng WeakSet theo dõi trạng thái xử lý đối tượng messages ( mail )
+ * - Bài tập 5 : Ứng dụng WeakMap cải tiến thêm Date vào Object message ( mail ) đã đọc
  */
 
 // I. WeakMap trong JavaScript
@@ -95,7 +109,7 @@ dang = null; // object bị xóa, entry tự biến mất
 
 // III. Bài tập ứng dụng với WeakMap và WeakSet
 
-// Bài tập 1 : Tính toán tốn thời gian (cache kết quả)
+// Bài tập 1 : Ứng dụng WeakMap để Cache sao cho giảm chi phí CPU tính toán
 // Question :
 // Viết hàm processData(obj) nhận vào một object,
 // thực hiện một số tính toán tốn thời gian, giả sử chuyển đổi object thành chuỗi in hoa
@@ -124,13 +138,16 @@ function processData(obj) {
 let dataObj = { name: "John", age: 30 };
 
 console.log(processData(dataObj));
-console.log(processData(dataObj)); // sử dụng cache
+// Processing new object... {"NAME":"JOHN","AGE":30}
+
+console.log(processData(dataObj)); // sử dụng cache , trả về kết quả đã lưu không tính toán lại
+// Using cached result... {"NAME":"JOHN","AGE":30}
 
 cacheData.get(dataObj).typeof; // "string"
 
-dataObj = null; // cache entry cũng biến mất
+dataObj = null; // khi xóa object, cache entry cũng biến mất
 
-// Bài tập 2  : Cache độ dài chuỗi
+// Bài tập 2  : Ứng dụng WeakMap để Cache độ dài chuỗi
 
 // Question :
 
@@ -164,7 +181,7 @@ console.log(getStringInfo(strObj)); // sử dụng cache
 
 strObj = null; // cache entry cũng biến mất
 
-//  Bài tập 3  : Cache kết quả xử lý DOM
+//  Bài tập 3  : Ứng dụng WeakMap để Cache kết quả xử lý DOM
 
 // Question :
 // Viết hàm renderElement(element) nhận vào một phần tử DOM element,
@@ -204,7 +221,7 @@ div.remove(); // gở khỏi DOM
 
 div = null; // cache entry cũng biến mất
 
-// Bài tập 4 : Theo dõi trạng thái xử lý đối tượng
+// Bài tập 4 : Ứng dụng WeakSet theo dõi trạng thái xử lý đối tượng messages ( mail )
 // Question :
 // 
 // Viết hàm markAsRead(msg) để đánh dấu một object msg đã được đọc,
@@ -238,7 +255,7 @@ console.log("Message 0 read?", readMessages.has(msg)); // true
 messages.shift(); 
 
 
-// Bài tập 5 : Cải tiến thêm Date vào Object
+// Bài tập 5 : Ứng dụng WeakMap cải tiến thêm Date vào Object message ( mail ) đã đọc
 // Question :
 // Thêm Date vào message đã đọc
 // Giải pháp :

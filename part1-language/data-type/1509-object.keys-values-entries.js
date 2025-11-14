@@ -11,6 +11,11 @@
  * 
  */
 
+"use strict";
+
+// in ra tiêu đề
+document.write("<h2> Object.keys(), Object.values(), Object.entries() </h2>");
+
 // 1. Object.keys(), Object.values(), Object.entries() 
 
 // 1.1 Định nghĩa
