@@ -1,9 +1,10 @@
 /** @file 
  * datatypes.js
  * @title Kiểu dữ liệu (Data Types)
- * @description JavaScript hỗ trợ nhiều kiểu dữ liệu khác nhau để lưu trữ và thao tác với thông tin.
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures|MDN Data Structures}
- * @example
+ * 1. Giới thiệu về kiểu dữ liệu trong JavaScript
+ * 2. Kiểu dữ liệu nguyên thủy (Primitive Data Types)
+ * 3. Kiểu dữ liệu phức tạp (Complex Data Types)
+ * 4. Toán tử typeof
  */
 
 "use strict";

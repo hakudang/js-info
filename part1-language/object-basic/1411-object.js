@@ -29,6 +29,10 @@ let user1 = {};
 let user2 = new Object();
 
 // 2. Nghĩa đen và thuộc tính
+// Object là một tập hợp các thuộc tính (key-value pairs).
+// Key là tên thuộc tính, value là giá trị của thuộc tính đó.
+// Key có kiểu dữ liệu là chuỗi hoặc Symbol.
+// Value có thể là bất kỳ kiểu dữ liệu nào: primitive, object, function, v.v...
 
 // Tạo đối tượng user với các thuộc tính name và age
 let user = {
