@@ -1,5 +1,5 @@
 /** 
- * Destructuring Assignment trong JavaScript
+ * Gán Phân Rã - Destructuring Assignment trong JavaScript
  * Cho phép phân rã cấu trúc của mảng hoặc object 
  * thành các biến riêng biệt
  * 
@@ -46,11 +46,16 @@ console.log(lastName); // Smith
 
 // 1.2 Bỏ qua phần tử không cần thiết
 let [first, , last, titleA] = ["Julius", "Caesar", "Consul"];
-console.log(titleA); // Consul
+console.log(first); // Julius
+console.log(last); // Consul
+console.log(titleA); // undefined
 
 // 1.3 Dùng với các iterable khác
 let [a, b, c] = "abc"; // chuỗi là iterable
+console.log(a, b, c); // a b c
+
 let [one, two, three] = new Set([1, 2, 3]); // Set là iterable
+console.log(one, two, three); // 1 2 3
 
 // 1.4 Gán vào thuộc tính của object 
 let user = {};
@@ -58,6 +63,8 @@ let user = {};
 console.log(user); // { name: 'Alice', age: 25 }
 
 // 1.5 Duyệt cặp key-value của Map
+// chuyển object thành mảng các cặp [key, value] và duyệt rồi phân rã
+
 user = { name: "Bob", age: 30 };
 
 for (let [key, value] of Object.entries(user)) {
@@ -68,12 +75,13 @@ for (let [key, value] of Object.entries(user)) {
 
 // 1.6 Hoán đổi biến
 // đã khai báo ở trên let
-a = 1, b = 2;
-[a, b] = [b, a];
-console.log(a, b); // 2 1
+let x = 1, y = 2;
+[x, y] = [y, x];
+console.log(x, y); // 2 1
 
 // 1.7 lấy phần còn lại (...rest)
 let [name1, name2, ...rest] = ["Mike", "Tom", "Jerry", "Spike"];
+console.log(name1, name2); // Mike Tom
 console.log(rest); // [ 'Jerry', 'Spike' ]
 
 // 1.8 Giá trị mặc định 
@@ -90,15 +98,23 @@ let options = {
     width: 100,
     height: 200
 };
-// let { title, width, height } = options;
-// console.log(title); // Menu
-// console.log(width); // 100
-// console.log(height); // 200
+let { title, width, height } = options;
+console.log(title); // Menu
+console.log(width); // 100
+console.log(height); // 200
 
 // 2.2 Đổi tên biến
-// let { width: w, height: h, title } = options;
-// console.log(w, h); // 100 200
-// console.log(title); // Menu
+let dang = {
+    hoten: "Dang Van A",
+    tuoi: 28,
+    quequan: "brvt"
+};
+
+let {hoten : fname, tuoi : fage, quequan : fplace} = dang;
+console.log(fname); // Dang Van A
+console.log(fage); // 28
+console.log(fplace); // brvt
+// console.log(hoten); // undefined
 
 // 2.3 Giá trị mặc định
 
@@ -107,28 +123,41 @@ let options = {
 // console.log(height); // 400
 // console.log(title); // My Menu
 
-// 2.4 Phần còn lại (...rest)
-// let { title, ...restProps } = {
-//     title: "Menu",
-//     width: 100,
-//     height: 200
-// };
-// console.log(restProps); // { width: 100, height: 200 }
-
-// 2.5 Phân rã lồng nhau (Nested destructuring)
-let optionsNested = {
-    size: { width: 100, height: 200 },
-    items: ["Cake", "Donut"]
+let haku = {
+    hoten: "Sakamoto Haku",
+    quequan: "Tokyo"
 };
 
+let {hoten : gname = "Khong biet", tuoi : gage = 40, quequan : gplace = "Chua ro"} = haku;
+console.log(gname); // Sakamoto Haku
+console.log(gage); // 40
+console.log(gplace); // Tokyo
+// console.log(hoten); // undefined
+
+// 2.4 Phần còn lại (...rest)
+
+let { tieude, ...restProps } = {
+    tieude: "Menu",
+    rong: 100,
+    cao: 200
+};
+console.log(restProps); // { rong: 100, cao: 200 }
+
+// 2.5 Phân rã lồng nhau (Nested destructuring)
+
+let optionsNested = {
+    size: { rong: 100, cao: 200 },
+    items: ["Cake", "Donut"]
+};
+// đổi tiên biến và gán giá trị mặc định
 let {
-    size: { width, height },
+    size: { rong, cao },
     items: [item1, item2],
-    title = "Menu"
+    daumuc = "Menu"
 } = optionsNested;
-console.log(title); // Menu
-console.log(width); // 100
-console.log(height); // 200
+console.log(daumuc); // Menu
+console.log(rong); // 100
+console.log(cao); // 200
 console.log(item1); // Cake
 console.log(item2); // Donut
 
@@ -185,9 +214,9 @@ console.log(isAdmin); // false
 // Answer :
 
 let salaries = {
-  "John": 100,
-  "Pete": 300,
-  "Mary": 250
+    "John": 100,
+    "Pete": 300,
+    "Mary": 250
 };
 
 // Object.entries(salaries); 
@@ -195,8 +224,8 @@ let salaries = {
 
 // Your code here
 function topSalary(salaries) {
-  let maxSalary = 0;
-  let topEmployee = null;
+    let maxSalary = 0;
+    let topEmployee = null;
     for (let [name, salary] of Object.entries(salaries)) {
         if (salary > maxSalary) {
             maxSalary = salary;

@@ -66,15 +66,17 @@ console.log(localSymbol.description); // name
 
 // 6.1 Symbol.hasInstance
 // Ý nghĩa:
-// Quy định khi nào một object được coi là “instance” của một hàm constructor — 
+// - Symbol.hasInstance là hook ẩn phía sau instanceof
+// - Quy định khi nào một object được coi là “instance” của một hàm constructor — 
 // tức là bạn có thể tùy chỉnh cách hoạt động của instanceof
+// - Symbol.hasInstance là một method tĩnh đặc biệt (static method) 
+// mà mỗi class có thể định nghĩa để tùy chỉnh kết quả của instanceof
 
 class User { }
 let u = new User();
 console.log(u instanceof User); // true
 
 // tùy chỉnh hành vi instanceof
-
 class Student {
     // định nghĩa phương thức Symbol.hasInstance
     static [Symbol.hasInstance](obj) {
