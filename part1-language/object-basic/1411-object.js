@@ -13,6 +13,7 @@
  * 9. Sắp xếp thứ tự thuộc tính
  * 10. Tóm tắt
  * 11. Bài tập
+ * - Bài tập 1
  */
 
 "use strict";
@@ -271,7 +272,7 @@ for (let key in user10) {
 
 // 11. Bài tập
 
-// 11.1 Bài tập 1 
+// Bài tập 1 : Tạo và thêm thuộc tính cho Object
 
 // Tạo một đối tượng rỗng user.
 // Thêm thuộc tính namecó giá trị John.
@@ -285,7 +286,7 @@ user11.surname = "Smith";
 user11.name = "Pete";
 delete user11.name;
 
-// 11.2 Bài tập 2
+// Bài tập 2 : Kiểm tra đối tượng rỗng
 
 // Write the function isEmpty(obj) which returns true 
 // if the object has no properties, false otherwise.
@@ -306,7 +307,11 @@ if (!isEmpty(schedule)) {
     console.log(schedule);
 }
 
-// 11.3 Bài tập 3
+// Bài tập 3 : Tính tổng giá trị thuộc tính của Object
+
+// Giải pháp :
+// - Dùng vòng lặp for..in để duyệt các thuộc tính trong object
+// - Cộng dồn giá trị của từng thuộc tính vào biến sum
 
 let salaries = {
     John: 100,
@@ -323,7 +328,13 @@ for (let key in salaries) {
 }
 console.log(sum); // 390
 
-// 11.4 Bài tập 4
+// Bài tập 4 : Tăng gấp đôi giá trị thuộc tính numeric trong Object
+
+// Giải pháp :
+// - Dùng vòng lặp for..in để duyệt các thuộc tính trong object
+// - Kiểm tra kiểu dữ liệu của giá trị thuộc tính
+// - Nếu là number thì nhân đôi giá trị thuộc tính đó
+
 // before the call
 let menu = {
     width: 200,
@@ -347,3 +358,18 @@ function multiplyNumeric(obj) {
     }
 }
 console.log(menu);
+
+// Bài tập 5 : tính length của Object
+
+// Giải pháp :
+// - Dùng vòng lặp for..in để duyệt các thuộc tính trong object
+// - Đếm số lần lặp để tính length
+function count(obj) {
+    let count = 0;
+    for (let key in obj) {
+        count++;
+    }
+    return count;
+}
+
+console.log(count({1:"JS", 2:"Python", 3:"Go"})); // 3

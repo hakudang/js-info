@@ -182,8 +182,6 @@ let johns = users.filter(user => user.name == "John");
 // 10. Reduce / reduceRight - tính toán trên mảng
 // array.reduce((biến_tích_lũy, phần_tử_hiện_tại) => { ... }, giá_trị_khởi_đầu)
 
-
-
 // 10.1 cộng tích lũy các phần tử mảng
 
 arr = [1, 2, 3, 4, 5];

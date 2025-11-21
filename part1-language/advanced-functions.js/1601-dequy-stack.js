@@ -3,7 +3,19 @@
  * Recursion (đệ quy) là khi một hàm tự gọi lại chính nó để 
  * giải quyết một bài toán phức tạp bằng cách chia nhỏ thành 
  * các bài toán cùng dạng nhưng đơn giản hơn.
- * 
+ * 1. Hai giải pháp tính lũy thừa
+ *   - Dùng vòng lặp (iterative)
+ *   - Dùng đệ quy (recursion)
+ * 2. Stack và Execution Context
+ * 3. Đệ quy vs vòng lặp
+ * 4. Ứng dụng đệ quy: Duyệt cấu trúc lồng nhau
+ * 5. Recursive Data Structures (Cấu trúc đệ quy)
+ * 6. Bài tập
+ *  - Bài tập 1 : Viết hàm sumTo(n) tính tổng số từ 1 đến n
+ *  - Bài tập 2 : Viết hàm factorial(n) tính giai thừa n!
+ *  - Bài tập 3 : Viết hàm fib(n) trả về số Fibonacci thứ n
+ *  - Bài tập 4 : Xuất linked list
+ *  - Bài tập 5 : Xuất linked list theo thứ tự ngược lại 
  */
 
 
@@ -160,7 +172,7 @@ list.next = list.next.next; // xóa phần tử 2
 
 // 6. Bài tập
 
-// Bài tập 1 : Viết hàm sumTo(n) tính tổng số từ 1 đến n sử dụng đệ quy
+// Bài tập 1 : Viết hàm sumTo(n) tính tổng số từ 1 đến n
 
 // Question : 
 // Viết hàm tính tổng các số từ 1 đến n.
