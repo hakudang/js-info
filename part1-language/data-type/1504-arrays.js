@@ -24,6 +24,7 @@
 document.write("<h2> Arrays </h2>");
 
 // 1 . Khai báo mảng
+
 let arr1 = []; // cách khai báo mảng rỗng phổ biến nhất
 let arr2 = new Array(); // cách khai báo mảng rỗng ít dùng hơn
 let fruits = ["Apple", "Banana", "Orange"]; // khai báo mảng với các phần tử
@@ -71,6 +72,7 @@ fruits.length = 0;  // xóa toàn bộ
 console.log(fruits); // []
 
 // 5. Mảng là đối tượng đặc biệt
+
 // Có thể thêm thuộc tính vào mảng giống như đối tượng
 // nhưng không nên làm vậy vì không ảnh hưởng đến độ dài mảng và các phương thức mảng
 let arr3 = [1,2,3,4,5 ];
@@ -90,6 +92,7 @@ for (let fruit of fruits) {
 }
 
 // 7. Mảng đa chiều
+
 let matrix = [
     [1, 2, 3],
     [4, 5, 6],

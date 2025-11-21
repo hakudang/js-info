@@ -247,11 +247,69 @@ console.log("B8 - countOccurrences(Map):", Object.fromEntries(counterMap)); // t
 section("Bài 9 - Sắp xếp mảng object theo tuổi tăng dần");
 
 let users = [
-  { name: "John", age: 30 },
-  { name: "Alice", age: 25 },
-  { name: "Bob", age: 28 }
+    { name: "John", age: 30 },
+    { name: "Alice", age: 25 },
+    { name: "Bob", age: 28 }
 ];
 
 // Sắp xếp theo age tăng dần. Không làm thay đổi mảng gốc.
 // Kỳ vọng: [Alice(25), Bob(28), John(30)]
 
+// Giải pháp :
+
+// Cách 1 :
+// sử dụng slice() để tạo bản sao mảng gốc trước khi sắp xếp
+// tránh làm thay đổi mảng gốc
+// sử dụng phương thức sort để sắp xếp mảng
+
+// cú pháp : arr.sort((a, b) => { ... });
+let sortedUsers = users
+    .slice() // tạo bản sao mảng gốc
+    .sort((a, b) => a.age - b.age) // sắp xếp
+    .map(user => `${user.name}(${user.age})`);
+console.log("B9 - sortedUsers(sort):", sortedUsers);
+
+// Cách 2 :
+// sử dụng spread operator [...] để tạo bản sao mảng gốc trước khi sắp xếp
+// tránh làm thay đổi mảng gốc
+// sử dụng phương thức sort để sắp xếp mảng
+
+let sortedUsers2 = [...users]
+    .sort((a, b) => a.age - b.age)
+    .map(user => `${user.name}(${user.age})`);
+console.log("B9 - sortedUsers(sort):", sortedUsers2);
+
+// Cách 3 :
+// sử dụng reduce để xây dựng mảng sorted mới
+// tìm index của phần tử lớn hơn user hiện tại
+// - nếu tìm thấy thì chèn user vào vị trí đó bằng splice
+// - nếu không tìm thấy thì thêm user vào cuối mảng bằng push
+let sortedUsers3 = users
+    .reduce((sorted, user) => {
+        let index = sorted.findIndex(u => u.age > user.age);
+        if (index === -1) {
+            sorted.push(user);
+        } else {
+            sorted.splice(index, 0, user);
+        }
+        return sorted;
+    }, [])
+    .map(user => `${user.name}(${user.age})`);
+console.log("B9 - sortedUsers(reduce):", sortedUsers3);
+
+/* =========================================================
+ * Bài tập 10 : Chuyển danh sách thành chuỗi
+ * ---------------------------------------------------------
+ * Tạo hàm listToString(names) nhận mảng tên và trả về chuỗi tên cách nhau bởi dấu phẩy và khoảng trắng
+ * - Sử dụng phương thức join để nối các phần tử mảng thành chuỗi
+ * =======================================================*/
+section("Bài 10 - Chuyển danh sách thành chuỗi");
+
+(() => {
+    let names = ["John", "Alice", "Bob"];
+
+    // Kỳ vọng: "John, Alice, Bob"
+
+    let str = names.join(", ");
+    console.log("B10 - joined:", str);
+})();
