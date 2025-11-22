@@ -15,8 +15,9 @@ function section(title) {
     console.log("====================");
 }
 
-// in ra html tag <h2> BÀI TẬP THÊM </h2>
-document.write("<h2> 10 BÀI TẬP THÊM </h2>");
+// in ra html tag <h2> ARRAY </h2>
+document.write("<h2> ARRAY </h2>");
+document.write("<h3> 10 BÀI TẬP THÊM </h3>");
 
 // BÀI TẬP THÊM
 

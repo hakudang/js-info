@@ -1,10 +1,17 @@
 "use strict";
 
-// in ra html tag <h2> ITERABLE - BÀI TẬP THÊM </h2>
-document.write("<h2> ITERABLE - BÀI TẬP THÊM </h2>");
+// in ra html tag <h2> ITERABLE </h2>
+document.write("<h2> ITERABLE</h2>");
+document.write("<h3> BÀI TẬP THÊM </h3>");
+
+function section(title) {
+    console.log("\n====================");
+    console.log(title);
+    console.log("====================");
+}
 
 /*****************************
- * BÀI TẬP 1 : Duyệt và kiểm tra kiểu giá trị trong mảng đặc biệt iterator và Array-like
+ * BÀI TẬP 1 : Bài 1. Kiểm tra iterable
  *****************************
  * Giải pháp tổng hợp
  * duyệt và kiểm tra từng giá trị trong mảng values
@@ -16,6 +23,8 @@ document.write("<h2> ITERABLE - BÀI TẬP THÊM </h2>");
  * Viết hàm isIterable, isArrayLike, isPlainObject, isMap, isSet, isPrimitive
  * Viết hàm classify để phân loại giá trị trong mảng values
 */
+
+section("Bài 1 - Kiểm tra iterable");
 
 //  Cách kiểm tra iterable object 
 // Kiểm tra object có phải iterable không bằng cách kiểm tra có phương thức [Symbol.iterator] hay không
@@ -125,6 +134,10 @@ console.log(values.map(classify));
  * BÀI 2: Duyệt iterable thủ công
  *****************************
 */
+// Giải pháp :
+// - Lấy iterator từ iterable bằng cách gọi iterable[Symbol.iterator]()
+// - Sử dụng vòng lặp while để gọi next() cho đến khi done là true
+section("Bài 2 - Duyệt iterable thủ công");
 
 let arr = ["a", "b", "c"];
 let iterator2 = arr[Symbol.iterator]();
@@ -136,21 +149,36 @@ while (true) {
 
 /*****************************
  * BÀI 3: Dùng for..of với nhiều loại iterable
+ * 
  *****************************
 */
+
+section("Bài 3 - for..of với nhiều loại iterable");
+
 let str3 = "ABC";
 let set3 = new Set([10, 20, 30]);
 let map3 = new Map([["x", 1], ["y", 2]]);
 
+// for..of với String trả về ký tự
+let str = "";
 for (let char of str3) {
-    console.log(char); // A B C
+    str += char;
 }
+console.log(str.trim()); // ABC
+
+// for..of với Set trả về giá trị
+let arrSet = [];
 for (let value of set3) {
-    console.log(value); // 10 20 30
+    arrSet.push(value);
 }
+console.log(arrSet); // [10, 20, 30]
+
+// for..of với Map trả về mảng [key, value]
+let arrMap = [];
 for (let [key, value] of map3) {
-    console.log(`${key}=${value}`); // x=1  y=2
+    arrMap.push(`${key}=${value}`);
 }
+console.log(arrMap); // ['x=1', 'y=2']
 
 /*****************************
  * BÀI 4: Tự xây iterable Range (from..to)
@@ -162,17 +190,18 @@ for (let [key, value] of map3) {
 //  * Định nghĩa phương thức [Symbol.iterator]() trả về iterator object
 //  * - return { value, done } trong phương thức next()
 
+section("Bài 4 - Tự xây iterable Range (from..to)");
+
 let range3 = {
-    from: 1,
+    from: 1, // không phải đk cần
     to: 5,
-    [Symbol.iterator]() {
-        // trả về iterator
-        let current = this.from;
+    [Symbol.iterator]() { // điều kiện để trở thành iterable
+        let current = this.from; // không phải đk cần
         let last = this.to;
-        return {
-            next() {
+        return { // trả về iterator object
+            next() { // điều kiện để trở thành iterator
                 if (current <= last) {
-                    return { value: current++, done: false };
+                    return { value: current++, done: false }; // trả về value cho for..of và done
                 } else {
                     return { value: undefined, done: true };
                 }
@@ -181,10 +210,11 @@ let range3 = {
     }
 };
 
-
+let result = [];
 for (let num of range3) {
-    console.log(num); // 1 2 3 4 5
+    result.push(num);
 }
+console.log(result); // [1, 2, 3, 4, 5]
 
 /*****************************
  * Bài tập 5 : Tạo iterator thủ công 
@@ -199,27 +229,21 @@ for (let num of range3) {
 // - Sử dụng biến trạng thái bên trong iterator object để theo dõi vị trí hiện tại
 // - Khi gọi next(), trả về phần tử hiện tại và cập nhật vị trí
 
+section("Bài 5 - Tạo iterator thủ công ");
+
 function makeIterator(array) {
     let index = 0;
-    return {
-        next() { // điểm quan trọng để hàm trở thành iterator : có next()
+    return { // trả về iterator object
+        next() { // điều kiện cần để trở thành iterator
             if (index < array.length) {
-                // Cách 1: gọi next() trả về value và done
-                // return { value: array[index++], done: false };
-
-                // Cách 2: làm cho iterator trở thành iterable luôn
                 let str = array[index++];
-                return { value: `value: ${str}, done: false`, done: false };
+                return { value: str, done: false };
             } else {
-                // Cách 1: gọi next() trả về value và done
-                // return { value: undefined, done: true };
-
-                // Cách 2: làm cho iterator trở thành iterable luôn
-                return { value: `value: undefined, done: true`, done: true };
+                return { value: undefined, done: true }; // kết thúc iterator
             }
         },
-        [Symbol.iterator]() {
-            return this; // điểm quan trọng để hàm này trở thành iterable
+        [Symbol.iterator]() { // điều kiện cần để trở thành iterable
+            return this; // trả về chính nó - iterator cũng là iterable
         }
     };
 
@@ -227,16 +251,11 @@ function makeIterator(array) {
 
 let myIterator = makeIterator(["JS", "Python", "Go"]);
 
-// Cách 1 : gọi next() thủ công
-// console.log(myIterator.next()); // { value: "JS", done: false }
-// console.log(myIterator.next()); // { value: "Python", done: false }
-// console.log(myIterator.next()); // { value: "Go", done: false }
-// console.log(myIterator.next()); // { value: undefined, done: true }
+console.log(myIterator.next()); // { value: "JS", done: false }
+console.log(myIterator.next()); // { value: "Python", done: false }
+console.log(myIterator.next()); // { value: "Go", done: false }
+console.log(myIterator.next()); // { value: undefined, done: true }
 
-// Cách 2 : dùng for..of để duyệt iterator
-for (let item of myIterator) {
-    console.log(`${item}`); // item là giá trị value ở next () trả về
-}
 
 /*****************************
  * Bài tập 6 : Iterable theo số Fibonacci
@@ -253,22 +272,26 @@ for (let item of myIterator) {
 // Kết quả 
 // 1, 1, 2, 3, 5, 8, 13, ...
 
+section("Bài 6 - Iterable Fibonacci (<= 1000)");
+
 let fibonacci = {
-    [Symbol.iterator]() {
+    [Symbol.iterator]() { // trở thành iterable
         let prev = 0, curr = 1;
         return {
-            next() {
+            next() { // trở thành iterator
                 if (curr > 1000) return { done: true };
                 [prev, curr] = [curr, prev + curr];
-                return { value: prev, done: false };
+                return { value: prev, done: false }; // trả về value cho for..of lấy
             }
         };
     }
 };
 
+let arrFibonacci = [];
 for (let n of fibonacci) {
-    console.log(n); // 1, 1, 2, 3, 5, 8, ... tới khi > 1000 thì dừng
+    arrFibonacci.push(n);
 }
+console.log("B6 - Fibonacci array:", arrFibonacci);
 
 /*****************************
  * Bài tập 7 : Iterable tạo bảng cửu chương
@@ -283,13 +306,15 @@ for (let n of fibonacci) {
 // - Sử dụng biến trạng thái bên trong iterator để theo dõi số lần nhân hiện tại
 // - Khi số lần nhân vượt quá 10, trả về done: true
 
+section("Bài 7 - Iterable bảng cửu chương");
+
 function multiplicationTable(n) {
     return {
-        [Symbol.iterator]() { // điểm quan trọng để hàm này trở thành iterable -> gọi for ..of được
+        [Symbol.iterator]() { // trở thành iterable
             let i = 1;
             return {
-                next() { // điểm quan trọng để hàm trở thành iterator : có next()
-                    if (i > 10) return { done: true };
+                next() { // trở thành iterator để dùng trong for..of
+                    if (i > 10) return { done: true }; // kết thúc iterator
                     let line = `${n} x ${i} = ${n * i}`;
                     i++;
                     return { value: line, done: false }; // value trả về ở next() và được for..of lấy ra
@@ -318,26 +343,28 @@ for (let line of multiplicationTable(8)) {
 // - Sử dụng Array.from() để chuyển iterable thành mảng
 // - Kiểm tra kết quả mảng có đúng các giá trị từ iterator trả về không
 
+section("Bài 8 - Sử dụng Array.from với iterable ");
 
 // let range = { from: 3, to: 7, ... };
 let range5 = {
     from: 3,
     to: 7,
-    [Symbol.iterator]() { // đối tượng là iterable
+    [Symbol.iterator]() { // trở thành iterable
         let current = this.from;
         let last = this.to;
         return {
-            next() { // đối tượng là iterator
+            next() { // trở thành iterator
                 if (current <= last) {
                     return { value: current++, done: false }; // trả về value cho Array.from lấy
 
                 } else {
-                    return { done: true };
+                    return { done: true }; // kết thúc iterator
                 }
             }
         }
     }
 };
+// Sử dụng Array.from để chuyển iterable thành mảng, có mapFn nhân đôi giá trị
 let arr5 = Array.from(range5, x => x * 2);
 console.log(arr5); // [6, 8, 10, 12, 14]
 
@@ -350,6 +377,9 @@ console.log(arr5); // [6, 8, 10, 12, 14]
 // Giải pháp :
 // - Tạo hàm reverseString(str) trả về object iterable
 // - Gợi ý: custom Symbol.iterator để đếm ngược index
+
+section("Bài 9 - Duyệt ngược chuỗi");
+
 function reverseString(str) {
     return {
         [Symbol.iterator]() { // trở thành iterable
@@ -359,7 +389,7 @@ function reverseString(str) {
                     if (index >= 0) {
                         const char = str[index];
                         index--;
-                        return { value: char, done: false };
+                        return { value: char, done: false }; // trả về ký tự hiện tại
                     }
                     return { value: undefined, done: true };
                 }
@@ -367,9 +397,12 @@ function reverseString(str) {
         }
     };
 }
+let arrStr = [];
+// let str9 = Array.from(reverseString("hello")).join('');
+// console.log("B9 - Reverse String:", str9);
 
-for (let char of reverseString("hello")) console.log(char);
-// o, l, l, e, h
+for (let char of reverseString("hello")) arrStr.push(char);
+console.log(arrStr.join('')); // "olleh"
 
 /***********************************
  * Bài tập 10 : Duyệt ngược chuỗi
@@ -382,13 +415,15 @@ for (let char of reverseString("hello")) console.log(char);
 // - iterator có phương thức next() trả về số tiếp theo
 // - Sử dụng biến trạng thái bên trong iterator để theo dõi số hiện tại
 
+section("Bài 10 - Custom iterable vô hạn (dừng bằng break)");
+
 function countFrom(start) {
     return {
         [Symbol.iterator]() { // trở thành iterable
             let current = start;
             return {
                 next() { // trở thành iterator
-                    return { value: current++, done: false };
+                    return { value: current++, done: false }; // luôn trả về done: false vì vô hạn
                 }
             }
         }
@@ -396,5 +431,5 @@ function countFrom(start) {
 }
 for (let n of countFrom(5)) {
     console.log(n);
-    if (n > 10) break; // dừng tay
+    if (n > 10) break; // tự dừng bằng break
 }

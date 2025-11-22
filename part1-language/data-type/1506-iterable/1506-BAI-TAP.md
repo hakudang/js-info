@@ -1,4 +1,4 @@
-## Bài 1. Kiểm tra iterable -> đã làm OK
+## Bài 1. Kiểm tra iterable
 
 Viết code để kiểm tra xem các giá trị sau có phải là iterable không:
 
