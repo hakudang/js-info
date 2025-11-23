@@ -1,6 +1,7 @@
 /** file: 1413-garbage-collection.js
  * Giới thiệu về Garbage Collection trong JavaScript 
  * Garbage Collection là quá trình tự động giải phóng bộ nhớ không còn sử dụng
+ * 
  * 1. Giới thiệu về Garbage Collection
  * 2. reachability - khả năng tiếp cận
  * 3. Ví dụ về Garbage Collection   

@@ -1,5 +1,6 @@
 /** 
- *  Rest parameters
+ *  Rest parameters trong JavaScript
+ *  Rest parameters(đối số rest) là một tính năng trong JavaScript
  *  cho phép chúng ta truyền nhiều đối số vào hàm và gộp chúng thành một mảng.
  *  Cú pháp: ...tên_biến
  *  1. Đối số Rest và cú pháp Spread ...
@@ -16,11 +17,28 @@
  *  
  */
 
+
+"use strict";
+
+// in ra tiêu đề
+document.write("<h2> Rest parameters trong JavaScript </h2>");
+
+function section (title) {
+    console.log ("\n================================ ");
+    console.log ("=== " + title + " ===");
+    console.log ("================================ \n");
+}
+
 // 1. Đối số Rest và cú pháp Spread ... 
+
 // trong javascript có nhiều hàm có thể nhận nhiều đối số
 // ví dụ Math.max(a, b, c, ...)
 // Object.assign(dest, ...sources) : 
 // Để định nghĩa hàm có thể nhận nhiều đối số, ta sử dụng cú pháp rest parameters
+
+section("1. Đối số Rest và cú pháp Spread ...");
+
+// ví dụ hàm sum(a, b) chỉ nhận 2 đối số
 
 function sum(a, b) {
     return a + b;
@@ -28,8 +46,10 @@ function sum(a, b) {
 console.log(sum(1, 2, 3, 4, 5)); // 3 : chỉ lấy 2 đối số đầu
 
 // 1.1 sử dụng 1 tham số rest
+
 // cú pháp : ...tên_biến
 // tên_biến sẽ là một mảng chứa tất cả các đối số được truyền vào hàm
+
 function sumAll(...args) {
     let sum = 0;
     for (let arg of args) {
@@ -40,22 +60,19 @@ function sumAll(...args) {
 console.log(sumAll(1, 2, 3, 4, 5)); // 15 : lấy tất cả đối số
 
 // 1.2 sử dụng nhiều tham số và tham số rest
+
 // phân rã thành các biến riêng biệt vào tham và mảng rest
+showName("Julius", "Caesar", "Consul", "Imperator");
+
 function showName(firstName, lastName, ...titles) {
     console.log(firstName + ' ' + lastName); // Julius Caesar
-
     console.log(titles[0]); // Consul
     console.log(titles[1]); // Imperator
     console.log(titles.length); // 2
 }
 
-showName("Julius", "Caesar", "Consul", "Imperator");
-// Julius Caesar 
-// Consul
-// Imperator
-// 2
-
 // 1.3 tham số rest phải là tham số cuối cùng
+
 // sai
 // function f(...args, lastName) { // Lỗi cú pháp
 //     // ...
@@ -73,29 +90,35 @@ function f(firstName, ...args) {
 // arguments không phải là mảng thực sự
 // nhưng có thể truy cập các phần tử qua chỉ số và có thuộc tính length
 
-function showName2() {
-    console.log(arguments.length);
-    console.log(arguments[0]);
-    console.log(arguments[1]);
-}
+section("2. Biến đặc biệt arguments");
+
 showName2("Julius", "Caesar");
 // 2
 // Julius
 // Caesar
+
 showName2("Ilya");
 // 1
 // Ilya
 // undefined
 
+function showName2() {
+    console.log(arguments.length);
+    console.log(arguments[0]);
+    console.log(arguments[1]);
+}
+
 // 2.1 arguments là array-like, iterable( có thể lặp ) nhưng không phải mảng
-// không dùng hàm map hoặc forEach trực tiếp trên arguments
+
+// không dùng hàm array: map hoặc forEach trực tiếp trên arguments
 
 // sai
+console.log(sumArgumentsWrong(4, 5, 6)); // 15
+
 function sumArgumentsWrong() {
     let sum = 0;
-
     // sai
-    // arguments.forEach((arg) => { // Lỗi, vì arguments không có forEach
+    // arguments.forEach((arg) => { // Lỗi, vì arguments không có forEach vì khong phải mảng
     //     sum += arg;
     // });
 
@@ -106,22 +129,32 @@ function sumArgumentsWrong() {
     });
     return sum;
 }
-console.log(sumArgumentsWrong(4, 5, 6)); // 15
 
 // 2.2 hàm arrow không có arguments
+
+showNameFunction(1); // 1
+
 function showNameFunction() {
     let showNameArrow = () => console.log(arguments[0]); // Lấy arguments từ hàm bao ngoài là 1 thay vì 2
     showNameArrow(2);
 }
 
-showNameFunction(1); // 1
-
 // 3. Sử dụng cú pháp spread
+
 // cú pháp spread ... cho phép tách một mảng thành các phần tử riêng lẻ
 // ví dụ truyền mảng vào hàm Math.max
 // Math.max(...array) tương đương Math.max(a, b, c, ...) 
 
+section("3 Sử dụng cú pháp spread");
+
 // 3.1 Truyền spread vào hàm
+
+// Cú pháp : ...iterable
+// tách các phần tử từ iterable (mảng, chuỗi, Set, Map, ...) 
+// và truyền từng phần tử làm đối số cho hàm
+
+let array = [3, 5, 1];
+console.log(...array); // 3 5 1
 
 // sai - không truyền mảng trực tiếp
 let arr = [3, 5, 1];
@@ -132,8 +165,8 @@ console.log(Math.max(3, 5, 1)); // 5
 
 // đúng - truyền spread vào hàm
 
-// truyền mảng với spread
 console.log(Math.max(...arr)); // 5
+
 // truyền nhiều spread 
 let arr1 = [1, -2, 3, 4];
 let arr2 = [8, 3, -8, 1];
@@ -142,6 +175,9 @@ console.log(Math.max(...arr1, ...arr2)); // 8
 console.log(Math.max(1, ...arr1, 2, ...arr2, 25)); // 25
 
 // 3.2 Tạo mảng bằng spread
+
+// Cú pháp : [...iterable]
+// tạo mảng mới bằng cách tách các phần tử từ iterable
 
 // ghép nhiều spread
 let merged = [0, ...arr1, 6, ...arr2]; // [0, 1, -2, 3, 4, 6, 8, 3, -8, 1]

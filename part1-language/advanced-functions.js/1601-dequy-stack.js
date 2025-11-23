@@ -23,14 +23,38 @@
 // in ra tiêu đề
 document.write("<h2> Đệ Quy Stack trong JavaScript </h2>");
 
+function section(title) {
+    console.log("\n====================");
+    console.log(`===${title}===`);
+    console.log("====================");
+}
 
 // 1. Hai giải pháp tính lũy thừa
+/*=========================================================
+* Viết hàm pow(x, n) tính x mũ n
+* ---------------------------------------------------------
+* Question :
+* Viết hàm pow(x, n) tính x mũ n (x^n).
+* ---------------------------------------------------------
+* Giải pháp 1 : Dùng vòng lặp
+* Giải pháp 2 : Dùng đệ quy
+* ---------------------------------------------------------
+* Ví dụ :
+* pow(2, 2) = 4
+* pow(2, 3) = 8
+* pow(2, 4) = 16
+* =======================================================*/
 
-// 1.1 Dùng vòng lặp (iterative)
+section("1. Hai giải pháp tính lũy thừa");
 
-pow(2, 2); // 4
-pow(2, 3); // 8
-pow(2, 4); // 16
+// 1.1 Tính lữy thừa Dùng vòng lặp (iterative)
+
+// giải pháp : dùng vòng lặp
+// khởi tạo biến result = 1
+// dùng vòng lặp từ 0 đến n - 1, nhân x vào result
+// trả về result
+
+section("1.1 Giải pháp dùng vòng lặp");
 
 function pow(x, n) {
     let result = 1;
@@ -42,6 +66,13 @@ console.log(pow(2, 3)); // 8
 
 // 1.2 Dùng đệ quy (recursion)
 
+// giải pháp : đệ quy
+// điều kiện dừng : n == 1
+// bước đệ quy :    
+// pow(x, n) = x * pow(x, n - 1)
+
+section("1.2 Giải pháp dùng đệ quy");
+
 function powRecursion(x, n) {
     // điều kiện dừng
     if (n === 1) {
@@ -52,14 +83,6 @@ function powRecursion(x, n) {
 }
 
 console.log(powRecursion(2, 3)); // 8
-
-// Giải thích
-// pow(2, 3)
-// = 2 * pow(2, 2)
-// = 2 * (2 * pow(2, 1))
-// = 2 * (2 * 2) = 8
-// Base case : n == 1
-// Recursive step : pow(x, n) = x * pow(x, n - 1)
 
 // 2. Stack và Execution Context
 
@@ -76,7 +99,7 @@ console.log(powRecursion(2, 3)); // 8
 // 4️⃣ pow(2, 2) = 2 * 2 = 4
 // 5️⃣ pow(2, 3) = 2 * 4 = 8
 
-// Khi chạy
+// Run
 
 // Context 1: pow(2, 3)
 // Context 2: pow(2, 2)
@@ -90,22 +113,51 @@ console.log(powRecursion(2, 3)); // 8
 
 // vòng lặp
 
-// function pow(x, n) {
-//     let result = 1;
-//     for (let i = 0; i < n; i++) result *= x;
-//     return result;
-// }
+/*
+function pow(x, n) {
+    let result = 1;
+    for (let i = 0; i < n; i++) result *= x;
+    return result;
+}
+*/
 
 // -> chỉ có 1 context, tiết kiệm bộ nhớ hơn
 // đệ quy : ngắn gọn, dễ hiểu hơn, nhưng mỗi lần gọi thêm 1 stack frame
 
 // 4. Ứng dụng đệ quy: Duyệt cấu trúc lồng nhau
-// Ví dụ tính tổng lương trong công ty có cấu trúc nhiều cấp
 
-// Ý tưởng giải pháp:
-// - Nếu là mảng nhân viên, tính tổng lương trong mảng
-// - Nếu là object phòng ban, gọi đệ quy cho từng phòng ban con và cộng kết quả
-// -> một bài toán lớn được tách thành nhiều bài toán nhỏ cùng kiểu
+/*=========================================================
+* Bài toán :
+* Tính tổng lương của tất cả nhân viên trong công ty,
+* công ty có cấu trúc nhiều cấp với các phòng ban lồng nhau.
+* ---------------------------------------------------------
+* Giải pháp :
+* - Nếu là mảng nhân viên, tính tổng lương trong mảng
+* - Nếu là object phòng ban, gọi đệ quy cho từng phòng ban con và cộng kết quả
+* ---------------------------------------------------------
+* Ví dụ :
+* let company = {
+*   sales: [{ name: "Alice", salary: 1000 },
+*   { name: "Bob", salary: 1500 }
+*   ],
+*   development: {
+*     sites: [{ name: "Charlie", salary: 2000 },
+*     { name: "David", salary: 2500 }
+*     ],
+*     internals: [{ name: "Eve", salary: 1300 }]
+*   }
+* };
+* kết quả kỳ vọng :
+* sumSalaries(company) = 1000 + 1500 + 2000 + 2500 + 1300 = 8300
+* Thứ tự gọi hàm 
+* sumSalaries(company)
+* = sumSalaries(company.sales) + sumSalaries(company.development)
+* = 2500 + (sumSalaries(development.sites) + sumSalaries(development.internals))
+* = 2500 + (4500 + 1300) = 8300
+* =======================================================*/
+
+section("4. Ứng dụng đệ quy: Duyệt cấu trúc lồng nhau");
+
 let company = {
     sales: [{ name: "Alice", salary: 1000 },
     { name: "Bob", salary: 1500 }
@@ -118,27 +170,20 @@ let company = {
     }
 };
 
+// department có thể là array hoặc object
 function sumSalaries(department) {
     if (Array.isArray(department)) {
-        // trường hợp mảng nhân viên -> tính tổng lương trong mảng
-        return department.reduce((sum, worker) => sum + worker.salary, 0);
+        return department.reduce((sum, worker) => { return sum + worker["salary"] }, 0);
     } else {
-        // trường hợp object phòng ban -> đệ quy cho từng phòng ban con
         let sum = 0;
-        for (let subdep of Object.values(department)) {
-            sum += sumSalaries(subdep); // gọi đệ quy
+        for (let subDep of Object.values(department)) {
+            sum += sumSalaries(subDep);
         }
         return sum;
     }
 }
 
 console.log(sumSalaries(company)); // 8300
-
-// Thứ tự gọi hàm 
-// sumSalaries(company)
-// = sumSalaries(company.sales) + sumSalaries(company.development)
-// = 2500 + (sumSalaries(development.sites) + sumSalaries(development.internals))
-// = 2500 + (4500 + 1300) = 8300
 
 // 5. Recursive Data Structures (Cấu trúc đệ quy)
 
@@ -172,17 +217,32 @@ list.next = list.next.next; // xóa phần tử 2
 
 // 6. Bài tập
 
-// Bài tập 1 : Viết hàm sumTo(n) tính tổng số từ 1 đến n
+/* =========================================================
+ * BÀI TẬP 1. Viết hàm sumTo(n) tính tổng số từ 1 đến n 
+ * ---------------------------------------------------------
+ * Question :
+ * Viết hàm tính tổng các số từ 1 đến n.
+ * ---------------------------------------------------------\
+ * Giải pháp 1 : Dùng vòng lặp
+ * - Khởi tạo biến sum = 0
+ * - Dùng vòng lặp từ 1 đến n, cộng dồn i vào sum
+ * - Trả về sum
+ * Giải pháp 2 : Dùng đệ quy
+ * - Điều kiện dừng : n == 1
+ * - Bước đệ quy : sumTo(n) = n + sumTo(n - 1)
+ * Giải pháp 3 : Dùng công thức toán học
+ * - sum = n * (n + 1) / 2
+ * ---------------------------------------------------------
+ * Ví dụ:
+ * sumTo(1) = 1
+ * sumTo(2) = 2 + 1 = 3
+ * sumTo(3) = 3 + 2 + 1 = 6
+ * sumTo(4) = 4 + 3 + 2 + 1 = 10
+ * ...
+ * sumTo(100) = 100 + 99 + ... + 2 + 1 = 5050
+ * =======================================================*/
 
-// Question : 
-// Viết hàm tính tổng các số từ 1 đến n.
-
-// sumTo(1) = 1
-// sumTo(2) = 2 + 1 = 3
-// sumTo(3) = 3 + 2 + 1 = 6
-// sumTo(4) = 4 + 3 + 2 + 1 = 10
-// ...
-// sumTo(100) = 100 + 99 + ... + 2 + 1 = 5050
+section("Bài 1 - Hàm sumTo(n) tính tổng số từ 1 đến n");
 
 // Giải pháp 1 : Dùng vòng lặp
 function sumToLoop(n) {
@@ -198,7 +258,7 @@ console.log(sumToLoop(3)); // 6
 // Giải pháp 2 : Dùng đệ quy 
 // sum = n + sumTo(n - 1)
 function sumToRecursion(n) {
-    if (n === 1) { 
+    if (n === 1) {
         return 1;
     } else {
         return n + sumToRecursion(n - 1);
@@ -209,15 +269,28 @@ console.log(sumToRecursion(3)); // 6
 // Giải pháp 3 : Dùng công thức toán học
 // sum = n * (n + 1) / 2
 function sumToMath(n) {
-    return n * (n + 1 ) / 2;
+    return n * (n + 1) / 2;
 }
 console.log(sumToMath(3)); // 6
 
-// Bài tập 2 : Viết hàm factorial(n) tính giai thừa n!
+/* =========================================================
+ * BÀI TẬP 2. Viết hàm factorial(n) tính giai thừa n!
+ * ---------------------------------------------------------
+ * Question :
+ * Viết hàm tính giai thừa của một số nguyên dương n là tích của tất cả các số nguyên dương từ 1 đến n.
+ * ---------------------------------------------------------
+ * Giải pháp 1 : Dùng đệ quy
+ * - factorial(n) = n * factorial(n - 1)
+ * Giải pháp 2 : Dùng vòng lặp
+ * - Khởi tạo biến result = 1
+ * - Dùng vòng lặp từ 2 đến n, nhân dồn i vào result
+ * - Trả về result
+ * ---------------------------------------------------------
+ * Ví dụ : 5! = 5 × 4 × 3 × 2 × 1 = 120
+ * ---------------------------------------------------------
+ * =======================================================*/
 
-// Question : 
-// Giai thừa của một số nguyên dương n là tích của tất cả các số nguyên dương từ 1 đến n.
-// Ví dụ : 5! = 5 × 4 × 3 × 2 × 1 = 120
+section("Bài 2 - Hàm factorial(n) tính giai thừa n!");
 
 // Cách 1 : Giải pháp dùng đệ quy
 // factorial(n) = n * factorial(n - 1)
@@ -241,20 +314,35 @@ function factorialLoop(n) {
 }
 console.log(factorialLoop(5)); // 120
 
-// Bài tập 3 : Viết hàm fib(n) trả về số Fibonacci thứ n
+/* =========================================================
+ * BÀI TẬP 3. Viết hàm fib(n) trả về số Fibonacci thứ n
+ * ---------------------------------------------------------
+ * Bài toán :
+ * Dãy Fibonacci là một chuỗi các số mà mỗi số là tổng của hai số trước đó.
+ * Dãy bắt đầu từ 0 và 1, vì vậy các số Fibonacci đầu tiên
+ * ---------------------------------------------------------
+ * Giải pháp :
+ * - Dùng đệ quy
+ * - Dùng vòng lặp
+ * ---------------------------------------------------------
+ * ví dụ :
+ * Fn = Fn-1 + Fn-2
+ * 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...
+ * fib(0) = 0
+ * fib(1) = 1
+ * fib(2) = 1
+ * fib(3) = 2
+ * fib(4) = 3
+ * =======================================================*/
 
-// Question : 
-// Dãy Fibonacci là một chuỗi các số mà mỗi số là tổng của hai số trước đó.
-// Dãy bắt đầu từ 0 và 1, vì vậy các số Fibonacci đầu tiên là:
-// Fn = Fn-1 + Fn-2
-// 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...
-// fib(0) = 0
-// fib(1) = 1
-// fib(2) = 1
+section("Bài 3 - Hàm fib(n) trả về số Fibonacci thứ n");
 
 // Giải pháp 1 dùng đệ quy
-function fib(n) { 
-    /* your code */ 
+
+section("Bài 3 - Giải pháp 1 dùng đệ quy")
+
+function fib(n) {
+    /* your code */
     if (n <= 1) {
         return n;
     } else {
@@ -266,38 +354,75 @@ console.log(fib(3)); // 2
 console.log(fib(7)); // 13
 // console.log(fib(40)); // 102334155
 
-
 // giải pháp 2 dùng vòng lặp
+
+section("Bài 3 - giải pháp 2 dùng vòng lặp")
+
 function fibLoop(n) {
-    let a = 0, b = 1;   
+    let a = 0, b = 1;
     for (let i = 0; i < n; i++) {
-        let temp = a;
-        a = b;
-        b = temp + b;
+        // let temp = a;
+        // a = b;
+        // b = temp + b;
+        [a, b] = [b, a + b]; // dùng destructuring assignment
     }
     return a;
 }
+console.log(fibLoop(3)); // 2
+console.log(fibLoop(7)); // 13
 
-// Bài tập 4 : Xuất linked list
+/*=========================================================
+* BÀI TẬP 4. Xuất linked list
+* ---------------------------------------------------------
+* Question :
+* Viết hàm printList(list) để in ra các phần tử của linked list theo thứ tự.
+* ---------------------------------------------------------
+* Giải pháp :
+* - Dùng vòng lặp While
+* - Dùng đệ quy
+* ---------------------------------------------------------
+* Ví dụ :
+* let list = {
+*   value: 1,
+*   next: {
+*     value: 2,
+*     next: {
+*       value: 3,
+*       next: {
+*         value: 4,
+*         next: null
+*       }
+*     }
+*   }
+* };
+* printList(list);
+* Output :
+* 1
+* 2
+* 3
+* 4
+* =======================================================*/
 
-// Question :
-// Viết hàm printList(list) để in ra các phần tử của linked list theo thứ tự.
+section("Bài tập 4 - Xuất linked list");
 
-let list2 = {
-  value: 1,
-  next: {
-    value: 2,
+let linkedList = {
+    value: 1,
     next: {
-      value: 3,
-      next: {
-        value: 4,
-        next: null
-      }
+        value: 2,
+        next: {
+            value: 3,
+            next: {
+                value: 4,
+                next: null
+            }
+        }
     }
-  }
 };
 
 // Giải pháp dùng vòng lặp While 
+
+section("Bài tập 4 - Giải pháp dùng vòng lặp While");
+
 function printListLoop(list) {
     let tmp = list;
     while (tmp) {
@@ -305,32 +430,67 @@ function printListLoop(list) {
         tmp = tmp.next;
     }
 }
-printListLoop(list2);
+printListLoop(linkedList);
 
 // Giải pháp dùng đệ quy
+
+section("Bài tập 4 - Giải pháp dùng đệ quy");
+
 function printListRecursion(list) {
     console.log(list.value);
     if (list.next) {
         printListRecursion(list.next);
     }
 }
-printListRecursion(list2);
+printListRecursion(linkedList);
 
-// Bài tập 4 : Xuất linked list theo thứ tự ngược lại
+/* =========================================================
+ * BÀI TẬP 5. Xuất linked list theo thứ tự ngược lại
+ * ---------------------------------------------------------
+ * Question :
+ * Viết hàm printListReverse(list) để in ra các phần tử của linked list theo thứ tự ngược lại.
+ * ---------------------------------------------------------
+ * Giải pháp 1 : dùng đệ quy
+ * - Gọi đệ quy cho phần tử next trước
+ * - In giá trị value sau khi gọi đệ quy
+ * Giải pháp 2 : dùng vòng lặp và mảng phụ
+ * - Dùng vòng lặp để duyệt linked list, lưu giá trị value vào mảng phụ
+ * - Dùng vòng lặp ngược để in giá trị từ mảng phụ
+ * ---------------------------------------------------------
+ * Ví dụ :
+ * let list = {
+ *   value: 1,
+ *   next: {
+ *     value: 2,
+ *     next: {
+ *       value: 3,
+ *       next: {
+ *         value: 4,
+ *         next: null
+ *       }
+ *     }
+ *   }
+ * };
+ * printListReverse(list);
+ * Output :
+ * 4
+ * 3
+ * 2
+ * 1
+ * =======================================================*/
 
-// Question :
-// Viết hàm printListReverse(list) để in ra các phần tử của linked list theo thứ tự ngược lại.
+section("Bài tập 5 - Xuất linked list theo thứ tự ngược lại");
 
-// Giải pháp dùng đệ quy
+// Giải pháp 1 : dùng đệ quy
 function printListReverse(list) {
     if (list.next) {
         printListReverse(list.next);
     }
     console.log(list.value);
 }
-printListReverse(list2);
+printListReverse(linkedList);
 
-// Giải pháp dùng vòng lặp và mảng phụ
+// Giải pháp 2 : dùng vòng lặp và mảng phụ
 function printListReverseLoop(list) {
     let arr = [];
     let tmp = list;
@@ -342,4 +502,4 @@ function printListReverseLoop(list) {
         console.log(arr[i]);
     }
 }
-printListReverseLoop(list2);
+printListReverseLoop(linkedList);

@@ -19,6 +19,7 @@ document.write("<h2> Object.keys(), Object.values(), Object.entries() </h2>");
 // 1. Object.keys(), Object.values(), Object.entries() 
 
 // 1.1 Định nghĩa
+
 // - Object.keys(obj) : trả về mảng các key (tên thuộc tính) của object
 // - Object.values(obj) : trả về mảng các giá trị của object
 // - Object.entries(obj) : trả về mảng các cặp [key, value] của object
@@ -41,6 +42,7 @@ console.log(map.keys()); // [Map Iterator] { 'name', 'age', 'isAdmin' }
 console.log(map.values()); // [Map Iterator] { 'John', 30, true }  
 
 // 1.2. Khác nhau giữa map (keys, values...) và object (keys, values...)
+
 // - Object.keys trả về mảng các key (tên thuộc tính) của object
 // - Map.keys trả về iterator (set) các key của map
 // - iterator và set khác nhau về mặt cấu trúc và cách sử dụng : 
@@ -48,6 +50,7 @@ console.log(map.values()); // [Map Iterator] { 'John', 30, true }
 //   + set lưu trữ giá trị, có thể duyệt nhiều lần
 
 // 1.3 Object có key là symbol
+
 // khi duyệt Object.keys/values/entries, sẽ phớt lờ symbolic properties
 let obj = {
     [Symbol("id")]: 123,
