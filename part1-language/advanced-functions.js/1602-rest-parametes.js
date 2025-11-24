@@ -1,5 +1,6 @@
 /** 
  *  Rest parameters trong JavaScript
+ * 
  *  Rest parameters(đối số rest) là một tính năng trong JavaScript
  *  cho phép chúng ta truyền nhiều đối số vào hàm và gộp chúng thành một mảng.
  *  Cú pháp: ...tên_biến
@@ -207,6 +208,9 @@ let arrayLike = {
 // - Array.from(object) hoạt động với cả iterable và array-like
 // - spread ... [...object] chỉ hoạt động với iterable
 // ví dụ với Array.from(object) và [...object]
+section("3.4 sự khác biệt giữa Array.from(object) và [...object]");
+
+// với array-like
 let arrayLike2 = {
   0: "Hello",
   1: "World",
@@ -217,13 +221,25 @@ console.log(Array.from(arrayLike2)); // ["Hello", "World"]
 // console.log([...arrayLike2]); // Lỗi, vì arrayLike2 không phải iterable
 
 // 4. Sao chép array/object
+// sử dụng spread để sao chép mảng hoặc object
+// tạo bản sao độc lập không liên kết với bản gốc
+// không hoạt động với các kiểu dữ liệu : primitive, function, Date, Map, Set, Array-Like,...
+
+section("4. Sao chép array/object");
 
 // 4.1 Sao chép mảng bằng spread
+// cú pháp : [...array]
+// tạo một mảng mới sao chép tất cả các phần tử từ mảng ban đầu
+// mảng mới không liên kết với mảng ban đầu
+
+section("4.1 Sao chép mảng bằng spread");
+
 let arrOriginal = [1, 2, 3];
 let arrCopy = [...arrOriginal]; // sao chép mảng
 
 // hay mảng có cùng nội dung ? trả lời true
-console.log(JSON.stringify(arrOriginal) === JSON.stringify(arrCopy)); // true
+console.log("arrOriginal = arrCopy về nội dung :", JSON.stringify(arrOriginal) === JSON.stringify(arrCopy)); // true
+console.log("arrOriginal = arrCopy về tham chiếu:", arrOriginal === arrCopy); // false
 
 // cập nhật arrOriginal có ảnh hưởng arrCopy ? -> không
 arrOriginal.push(4);
@@ -231,11 +247,18 @@ console.log(arrOriginal); // [1, 2, 3, 4]
 console.log(arrCopy); // [1, 2, 3]
 
 // 4.2 Sao chép Object bằng spread
+// cú pháp : {...object}
+// tạo một object mới sao chép tất cả các thuộc tính từ object ban đầu
+// object mới không liên kết với object ban đầu
+
+section("4.2 Sao chép Object bằng spread");
+
 let objArrOriginal = {a: 1, b: 2, c: 3};
 let objArrCopy = {...objArrOriginal}; // sao chép object
 
 // hay object có cùng nội dung ? trả lời true
-console.log(JSON.stringify(objArrOriginal) === JSON.stringify(objArrCopy)); // true
+console.log("objArrOriginal = objArrCopy về nội dung :",JSON.stringify(objArrOriginal) === JSON.stringify(objArrCopy)); // true
+console.log("objArrOriginal = objArrCopy về tham chiếu:", objArrOriginal === objArrCopy); // false
 
 // cập nhật objArrOriginal có ảnh hưởng objArrCopy ? -> không
 objArrOriginal.d = 4;
@@ -245,5 +268,16 @@ console.log(objArrCopy); // {a: 1, b: 2, c: 3}
 // nếu object có thuộc tính là object khác, thì thuộc tính đó vẫn tham chiếu đến cùng object ban đầu
 
 // 4.3 Có thể dùng Object.assign để sao chép object như spread
+
+section("4.3 Có thể dùng Object.assign để sao chép object như spread");
+
 let objAssignOriginal = {x: 10, y: 20};
 let objAssignCopy = Object.assign({}, objAssignOriginal); // sao chép object
+
+console.log("objAssignOriginal = objAssignCopy về nội dung :", JSON.stringify(objAssignOriginal) === JSON.stringify(objAssignCopy)); // true
+console.log("objAssignOriginal = objAssignCopy về tham chiếu:", objAssignOriginal === objAssignCopy); // false
+
+// cập nhật objAssignOriginal có ảnh hưởng objAssignCopy ? -> không
+objAssignOriginal.z = 30;
+console.log("4.3 objAssignOriginal :", objAssignOriginal); // {x: 10, y: 20, z: 30}
+console.log("4.3 objAssignCopy :", objAssignCopy); // {x: 10, y: 20}
