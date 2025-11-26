@@ -64,8 +64,10 @@ ask("Do you agree?", showOk, showCancel);
 // - Hàm biểu thức (Function Expression) chỉ có thể được gọi sau khi định nghĩa
 
 //5.1 Gọi hàm khai báo trước định nghĩa
+
 // gọi hàm trước khi định nghĩa
 sayHi_2("John"); // in ra Hello, John!
+
 // định nghĩa hàm
 function sayHi_2(name) {
     console.log("Hello, " + name + "!");

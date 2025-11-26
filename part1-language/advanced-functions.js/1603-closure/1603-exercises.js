@@ -167,10 +167,10 @@ function createTodo() {
         },
         remove(task) { // closure truy cập biến tasks
             const idx = tasks.indexOf(task);
-            if (idx !== -1 ) tasks.splice(idx,1);
+            if (idx !== -1) tasks.splice(idx, 1);
             return [...tasks];
         }
-}
+    }
 }
 
 const todo = createTodo();
@@ -208,19 +208,215 @@ byField trả về comparator function.
 section("Bài 5 – byField(field) cho sort");
 
 function byField(field) {
-    let key = field ;
-    return function (a, b){ // closure truy cập biến key
-        return  a[key] > b[key] ? 1 : -1; 
+    let key = field;
+    return function (a, b) { // closure truy cập biến key
+        return a[key] > b[key] ? 1 : -1;
     }
 }
 
 const users = [
-  { name: "John", age: 20 },
-  { name: "Pete", age: 18 },
-  { name: "Ann", age: 19 }
+    { name: "John", age: 20 },
+    { name: "Pete", age: 18 },
+    { name: "Ann", age: 19 }
 ];
 
 users.sort(byField("name"));
 console.log(JSON.stringify(users));
 users.sort(byField("age"));
 console.log(JSON.stringify(users));
+
+/* ========================================================
+* Bài 6 – Logger có prefix
+* Bài toán : Viết logger(prefix):
+* ---------------------------------------------------------
+* Ví dụ :
+const warning = logger("[WARNING]");
+warning("Disk low"); 
+// [WARNING] Disk low
+* ---------------------------------------------------------
+Yêu cầu:
+prefix được “nhớ” bằng closure, không truyền lại mỗi lần gọi.
+* ====================================================== */
+
+section("Bài 6 – logger(prefix)");
+
+function logger(prefix) {
+    // closure "nhớ" biến prefix
+    return function (msg) { // closure truy cập biến prefix
+        return console.log(prefix, msg);
+    }
+}
+
+const warning = logger("[WARNING]");
+warning("Disk low"); // [WARNING] Disk low
+warning("Memory low"); // [WARNING] Memory low
+
+const error = logger("[ERROR]");
+error("System crash"); // [ERROR] System crash
+
+/* ========================================================
+* Bài 7 – Memoize (cache kết quả)
+* ---------------------------------------------------------
+* Bài toán : Viết hàm memoize(fn):
+* ---------------------------------------------------------
+* Ví dụ :
+Cho hàm nặng:
+
+function slowSquare(n) {
+  console.log("Computing...");
+  return n * n;
+}
+
+const cached = memoize(slowSquare);
+
+console.log(cached(5)); // Computing..., 25
+console.log(cached(5)); // 25 (không log "Computing...")
+* ---------------------------------------------------------
+Yêu cầu:
+Cache theo tham số đầu vào.
+Dùng Map là tốt nhất.
+* ====================================================== */
+
+section("Bài 7 – memoize(fn)");
+
+function memoize(fn) {
+    const cache = new Map(); // private cache
+
+    return function (...args) { // closure truy cập biến cache
+        // tạo key đơn giản bằng JSON (đủ dùng cho bài tập)
+        const key = JSON.stringify(args); // tham số đầu vào
+
+        if (cache.has(key)) {
+            return cache.get(key); // không gọi hàm gốc -> lấy từ cache
+        }
+
+        const result = fn.apply(this, args); // gọi hàm gốc
+        cache.set(key, result); // lưu kết quả vào cache
+        return result;
+    };
+}
+
+function slowSquare(n) {
+    console.log("Computing...");
+    return n * n;
+}
+
+const cached = memoize(slowSquare);
+
+console.log(cached(5)); // Computing..., 25
+console.log(cached(5)); // 25 (không log "Computing...")
+console.log(cached(7)); // Computing..., 49
+
+/* ========================================================
+* Bài 8 – once() wrapper
+* ---------------------------------------------------------
+* Bài toán : Viết once(fn) để fn chỉ chạy đúng 1 lần:
+* ---------------------------------------------------------
+* Ví dụ :
+const init = once(() => console.log("Run"));
+init(); // Run
+init(); // nothing
+* ---------------------------------------------------------
+Yêu cầu:
+Trả về result của lần chạy đầu tiên cho các lần sau.
+* ====================================================== */
+
+section("Bài 8 – once(fn)");
+
+function once(fn) {
+    let called = false;
+    let result;
+    return function (...args) { // closure truy cập biến called, result
+        if (!called) {
+            called = true;
+            result = fn.apply(this, args);
+        }
+        return result; // các lần sau trả lại kết quả cũ
+    }
+}
+
+const init = once(() => console.log("Run"));
+init(); // Run
+init(); // nothing
+
+/* ========================================================
+* Bài 9 – Generator ID theo prefix
+* ---------------------------------------------------------
+* Bài toán : Viết createIdGenerator(prefix):
+* ---------------------------------------------------------
+* Ví dụ :
+const genUserId = createIdGenerator("USER_");
+console.log(genUserId()); // USER_1
+console.log(genUserId()); // USER_2
+* ---------------------------------------------------------
+Yêu cầu:
+Mỗi generator độc lập.
+Prefix cố định theo generator.
+* ====================================================== */
+
+section("Bài 9 – createIdGenerator(prefix)");
+
+function createIdGenerator(prefix) {
+    let id = 1;
+    return function () {  // closure truy cập biến prefix, id
+        return `${prefix}_${id++}`;
+    };
+}
+
+const genUserId = createIdGenerator("USER_");
+console.log(genUserId()); // USER_1
+console.log(genUserId()); // USER_2
+
+/* ========================================================
+* Bài 10 – Fix code lỗi bằng closure
+* ---------------------------------------------------------
+* Bài toán :
+Fix makeArmy (shooter bug)
+* ---------------------------------------------------------
+* Ví dụ :
+Cho code lỗi:
+
+function makeArmy() {
+  let shooters = [];
+
+  for (var i = 0; i < 10; i++) {
+    shooters.push(function() {
+      console.log(i);
+    });
+  }
+
+  return shooters;
+}
+
+const army = makeArmy();
+army[0](); // tất cả in 10
+Hãy sửa để:
+
+army[0](); // 0
+army[1](); // 1
+...
+army[9](); // 9
+* ---------------------------------------------------------
+Yêu cầu:
+Sửa bằngclosure (đúng bản chất), không hack.
+* ====================================================== */
+
+section("Bài 10 – Fix makeArmy (shooter bug)");
+
+function makeArmy() {
+    let shooters = [];
+
+    for (let i = 0; i < 10; i++) { // không dùng var chỉ tạo biến i tham chiếu duy nhất cho cả vòng lặp 
+        shooters.push(function () { // closure truy cập biến i
+            console.log(i);
+        });
+    }
+    return shooters;
+}
+
+const army = makeArmy();
+
+army[0](); // 0
+army[1](); // 1
+// ...
+army[9](); // 9
