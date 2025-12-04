@@ -198,7 +198,7 @@ function once(fn) {
   return function (...args) {
     if (!called) {
       called = true;
-      result = fn.apply(this, args);
+      result = fn.apply(this, args); // gọi hàm gốc lần đầu
     }
     return result; // các lần sau trả lại kết quả cũ
   };
