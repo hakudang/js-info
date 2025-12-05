@@ -40,14 +40,19 @@ setTimeout(user.sayHi, 1000); // Hello, undefined (this mất context)
 
 // 2. Giải pháp dùng wrapper để giữ this
 
+// Định nghĩa wrapper : một hàm trung gian gọi đến hàm gốc và giữ nguyên ngữ cảnh this
+
+// Sử dụng hàm mũi tên để gọi user.sayHi() giữ nguyên this
+// Điểm hạn chế : phải tạo wrapper cho mỗi lần gọi. Nếu user bị thay đổi trước khi timer chạy, 
+// callback sẽ sử dụng user mới, không phải user ban đầu
+
 section("2. Giải pháp dùng wrapper để giữ this");
 
 setTimeout (() => user.sayHi(), 1000); // Hello, John
-// Sử dụng hàm mũi tên để gọi user.sayHi() giữ nguyên this
-// điểm hạn chế : phải tạo wrapper cho mỗi lần gọi. Nếu user bị thay đổi trước khi timer chạy, 
-// callback sẽ sử dụng user mới, không phải user ban đầu
+
 
 // 3. Giải pháp dùng bind() để cố định this
+
 // cú pháp : let boundFunc = func.bind(thisArg, arg1, arg2, ...);
 // - thisArg : giá trị sẽ được sử dụng làm this khi hàm được gọi
 // - arg1, arg2, ... : các tham số cố định được truyền trước cho hàm
@@ -59,3 +64,87 @@ let sayHi = user.sayHi.bind(user); // tạo hàm mới với this cố định l
 setTimeout(sayHi, 1000); // Hello, John
 // bind() trả về hàm mới với this luôn trỏ vào user
 // không bị ảnh hưởng bởi ngữ cảnh gọi sau này
+
+
+// 4. bind cũng giữ nguyên arguments
+
+section("4. bind cũng giữ nguyên arguments");
+
+let userA = {
+    firstName: "John",
+    sayHi(phrase) {
+        console.log(`${phrase}, ${this.firstName} !`);
+    }
+};
+let sayHiBound = userA.sayHi.bind(userA); // this cố định là userA
+sayHiBound("Hello"); // Hello, John !
+sayHiBound("Greetings"); // Greetings, John !
+
+// 5. Partial function – bind một phần tham số
+
+// Định nghĩa Partial function : hàm được tạo ra từ hàm gốc với một số tham số đã được cố định trước
+
+section("5. Partial function – bind một phần tham số");
+
+function multiply(a, b) {
+    return a * b;
+}
+
+let double = multiply.bind(null, 2); // cố định a = 2
+console.log(double(5)); // 10 (2 * 5)
+
+// 6. bindAll – bind hàng loạt method trong object
+section("6. bindAll – bind hàng loạt method trong object");
+
+// Giả sử ta có nhiều method trong object và muốn bind tất cả chúng
+
+// Cách 1 : dùng for in để duyệt qua các key và bind từng method
+// for ( let key in userA ) {
+//     if ( typeof userA[key] === 'function' ) {
+//         userA[key] = userA[key].bind(userA);
+//     }
+// }
+
+// Cách 2 : sử dụng thư viện như lodash với _.bindAll(userA);
+
+// Để sử dụng lodash trong browser, cần nạp nó qua CDN hoặc script tag trong HTML
+// _ là đối tượng toàn cục của lodash
+_.bindAll(userA); // bind tất cả method trong userA với this là userA
+
+// Bây giờ tất cả method trong userA đều có this cố định là userA
+setTimeout(() => userA.sayHi("Greetings"), 1000); // Greetings, John !
+
+// 7. Partial không cần bind this
+
+section("7. Partial không cần bind this");
+
+let userB = {
+  firstName: "John",
+  say(time, msg) {
+    console.log(`[${time}] ${this.firstName}: ${msg}`);
+  }
+};
+
+// Sử dụng _.partial của lodash để cố định tham số mà không ảnh hưởng this
+let sayNow = _.partial(userB.say, _ , "Hello!"); // cố định msg = "Hello!"
+
+// Gọi sayNow với this là userB và truyền tham số time
+sayNow.call(userB, "10:00"); // [10:00] John: Hello!
+
+// BÀI TẬP
+/* -------------------------------------------------------
+ * Bài tập 1 : 
+ * Bound function as a method
+ * -----------------------------------------------------
+function f() {
+  console.log( this ); // ?
+}
+
+let user = {
+  g: f.bind(null)
+};
+
+user.g();
+* -----------------------------------------------------
+* Hỏi : Hàm nào sẽ được gọi ? f hay bound function ?
+* this trong f sẽ trỏ tới đối tượng nào ?
