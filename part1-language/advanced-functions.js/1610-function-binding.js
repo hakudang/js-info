@@ -60,7 +60,7 @@ setTimeout (() => user.sayHi(), 1000); // Hello, John
 
 section("3. Giải pháp dùng bind() để cố định this");
 
-let sayHi = user.sayHi.bind(user); // tạo hàm mới với this cố định là user
+let sayHi = user.sayHi.bind(user); // bind với this là user
 setTimeout(sayHi, 1000); // Hello, John
 // bind() trả về hàm mới với this luôn trỏ vào user
 // không bị ảnh hưởng bởi ngữ cảnh gọi sau này
@@ -76,8 +76,12 @@ let userA = {
         console.log(`${phrase}, ${this.firstName} !`);
     }
 };
-let sayHiBound = userA.sayHi.bind(userA); // this cố định là userA
+let sayHiBound = userA.sayHi.bind(userA); // bind với this là userA
+
+// Gọi sayHiBound với tham số phrase
 sayHiBound("Hello"); // Hello, John !
+
+// Gọi sayHiBound với tham số phrase khác
 sayHiBound("Greetings"); // Greetings, John !
 
 // 5. Partial function – bind một phần tham số
@@ -90,7 +94,7 @@ function multiply(a, b) {
     return a * b;
 }
 
-let double = multiply.bind(null, 2); // cố định a = 2
+let double = multiply.bind(null, 2); // bind với this là null và cố định a = 2
 console.log(double(5)); // 10 (2 * 5)
 
 // 6. bindAll – bind hàng loạt method trong object
@@ -132,9 +136,10 @@ let sayNow = _.partial(userB.say, _ , "Hello!"); // cố định msg = "Hello!"
 sayNow.call(userB, "10:00"); // [10:00] John: Hello!
 
 // BÀI TẬP
+
 /* -------------------------------------------------------
  * Bài tập 1 : 
- * Bound function as a method
+ * Hỏi : màn hình sẽ hiển thị gì sau khi chạy đoạn code dưới đây ?
  * -----------------------------------------------------
 function f() {
   console.log( this ); // ?
@@ -145,6 +150,168 @@ let user = {
 };
 
 user.g();
-* -----------------------------------------------------
-* Hỏi : Hàm nào sẽ được gọi ? f hay bound function ?
-* this trong f sẽ trỏ tới đối tượng nào ?
+* ----------------------------------------------------- */
+
+section("Bài tập 1 : Bound function as a method");
+
+function f() {
+  console.log( this ); // ?  -> màn hình hiển thị null vì f được bind với this là null
+}
+
+let userC = {
+  g: f.bind(null)
+};
+
+userC.g();
+
+
+/* -------------------------------------------------------
+ * Bài tập 2 : Second bind
+ * 
+ * Có thể thay đổi this bằng cách thêm bind lần nữa không?
+ * Kết quả sẽ là gì?
+ * ------------------------------------------------------
+function f() {
+  console.log(this.name);
+}
+
+f = f.bind( {name: "John"} ).bind( {name: "Ann" } );
+
+f();
+ * -----------------------------------------------------*/
+
+section("Bài tập 2 : Second bind");
+
+function f2() {
+  console.log(this.name);
+}
+
+f2 = f2.bind( {name: "John"} ).bind( {name: "Ann" } );
+f2();  
+// bind với this là {name: "John"} đầu tiên sẽ có hiệu lực
+// bind lần hai với {name: "Ann"} sẽ không thay đổi this nữa
+// "John" ->  vì bind chỉ có tác dụng lần đầu tiên, lần sau không thay đổi this nữa
+
+/* -------------------------------------------------------
+ * Bài tập 3 : Thuộc tính của Function sau khi bind
+ * There’s a value in the property of a function. 
+ * Will it change after bind? Why, or why not?
+ * 
+function sayChao() {
+  console.log( this.name );
+}
+sayChao.test = 5;
+
+let bound = sayChao.bind({
+  name: "John"
+});
+
+console.log( bound.test ); // what will be the output? why?
+ * ------------------------------------------------------*/
+
+section("Bài tập 3 : Hàm formatDate với partial");
+
+function sayChao() {
+  console.log( this.name );
+}
+sayChao.test = 5;
+
+let bound = sayChao.bind({ name: "John"}); // bind với this là {name: "John"}
+
+console.log( bound.test ); // undefined
+
+// Giá trị của thuộc tính test không được sao chép sang hàm mới bound
+// Vì bind tạo ra một hàm mới, không phải là bản sao hoàn chỉnh của hàm gốc
+// Do đó, các thuộc tính tùy chỉnh như test không được giữ lại trong hàm mới
+
+/* -------------------------------------------------------
+ * Bài tập 4 : Fix lỗi mất this"
+ * 
+function askPassword(ok, fail) {
+  let password = prompt("Password?", '');
+  if (password == "rockstar") ok();
+  else fail();
+}
+
+let userD = {
+  name: 'John',
+
+  loginOk() {
+    console.log(`${this.name} logged in`);
+  },
+
+  loginFail() {
+    console.log(`${this.name} failed to log in`);
+  },
+
+};
+
+askPassword(userD.loginOk, userD.loginFail);
+ * ------------------------------------------------------*/
+
+section("Bài tập 4 : Fix lỗi mất this");
+
+function askPassword(ok, fail) {
+  let password = prompt("Password?", '');
+  if (password == "rockstar") ok();
+  else fail();
+}
+
+let userD = {
+  name: 'John',
+
+  loginOk() {
+    console.log(`${this.name} logged in`);
+  },
+
+  loginFail() {
+    console.log(`${this.name} failed to log in`);
+  },
+
+};
+
+// askPassword(userD.loginOk, userD.loginFail); // this bị mất trong loginOk và loginFail
+askPassword(userD.loginOk.bind(userD), userD.loginFail.bind(userD)); // bind userD.loginOk và userD.loginFail với this là userD
+
+/* -------------------------------------------------------
+* Bài tập 5 : Partial application for login
+* fix lại đoạn code sau để sử dụng bind
+*-------------------------------------------------------
+function askPassword(ok, fail) {
+  let password = prompt("Password?", '');
+  if (password == "rockstar") ok();
+  else fail();
+}
+
+let user = {
+  name: 'John',
+
+  login(result) {
+    console.log( this.name + (result ? ' logged in' : ' failed to log in') );
+  }
+};
+
+askPassword(?, ?); // ?
+*-------------------------------------------------------*/
+
+section("Bài tập 5 : Partial application for login");
+
+function askPassword(ok, fail) {
+  let password = prompt("Password?", '');
+  if (password == "rockstar") ok();
+  else fail();
+}
+
+let userE = {
+  name: 'John',
+
+  login(result) {
+    console.log( this.name + (result ? ' logged in' : ' failed to log in') );
+  }
+};
+
+// askPassword(?, ?); // ?
+askPassword(
+  userE.login.bind(userE, true),  // bind this là userE và cố định result = true
+  userE.login.bind(userE, false)  // bind this là userE và cố định result = false
+);
