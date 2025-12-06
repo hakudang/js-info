@@ -13,6 +13,9 @@
 
 "use strict";
 
+// in ra tiêu đề
+document.write("<h2> Function Binding trong JavaScript </h2>");
+
 function section(title) {
     console.log("\n================================ ");
     console.log("=== " + title + " ===");

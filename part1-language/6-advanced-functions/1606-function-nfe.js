@@ -154,7 +154,7 @@ section("3. Custom properties trong function");
     console.log(`Called ${sayHi.counter} times`); // Called 2 times
 })();
 
-// 3.2 Dùng thuộc tính thay cho closure
+// 3.2 Dùng thuộc tính thay closure
 
 // Thay Closure → biến private, bên ngoài không sửa được.
 // Function property → bên ngoài sửa thoải mái:
