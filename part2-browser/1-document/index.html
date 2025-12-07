@@ -1,11 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <script>
+        function section(title) {
+            console.log("\n================================ ");
+            console.log("=== " + title + " ===");
+            console.log("================================\n");
+        }
+        section("document.body.childNodes");
+    </script>
 </head>
+
 <body>
-    <script src="./2101-environment.js"></script>
+    <div>Begin</div>
+
+    <ul>
+        <li>Information</li>
+    </ul>
+
+    <div>End</div>
+    <table id="table">
+        <tr>
+            <td>one</td>
+            <td>two</td>
+        </tr>
+        <tr>
+            <td>three</td>
+            <td>four</td>
+        </tr>
+    </table>
+
+    <script>
+        // get td with "two" (first row, second column)
+        let td = table.rows[0].cells[1];
+        td.style.backgroundColor = "red"; // highlight it
+    </script>
+
+    <script>
+        // for (let i = 0; i < document.body.childNodes.length; i++) {
+        //     alert(document.body.childNodes[i]); // Text, DIV, Text, UL, ..., SCRIPT
+        // }
+        section("Lặp qua các node con của body");
+        for (let node of document.body.childNodes) {
+            console.log(node);
+        }
+
+        section("Lặp qua các element con của body");
+        for (let child of document.body.children) {
+            console.log(child);
+        }
+
+        section("Lặp qua các thuộc tính của childNodes (không nên dùng)");
+        for (let prop in document.body.childNodes) {
+            console.log(prop);
+        }
+
+        section("parent & siblings");
+        // parent of <body> is <html>
+        console.log(document.body.parentNode === document.documentElement); // true
+
+        // after <head> goes <body>
+        console.log(document.head.nextSibling); // Text node (whitespace)
+        console.log(document.head.nextElementSibling); // HTMLBodyElement
+        console.log(document.head.nextElementSibling === document.body); // true
+
+        // before <body> goes <head>
+        console.log(document.body.previousSibling); // Text node (whitespace)
+        console.log(document.body.previousElementSibling); // HTMLHeadElement
+        console.log(document.body.previousElementSibling === document.head); // true
+
+        section("Đi lên tới <html> nhưng không lên document");
+        let elem = document.body;
+        // phép gán đến khi elem.parentElement là null thì dừng
+        // tức là đã lên tới <html>, trên <html> là document không phải element
+        while (elem = elem.parentElement) { // go up till <html>
+            console.log(elem);
+        }
+
+
+    </script>
+    ...more stuff...
 </body>
+
 </html>
