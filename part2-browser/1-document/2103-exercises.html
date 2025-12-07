@@ -1,14 +1,13 @@
-<!-- Bài tập 1 - DOM children
- For each of the following, give at least one way of how to access them:
-
-The <div> DOM node?
-The <ul> DOM node?
-The second <li> (with Pete)? -->
-
-<!-- <html>
+<html>
 
 <body>
-    <div>Users:</div>
+    <!-- Bài tập 1 - DOM children
+    For each of the following, give at least one way of how to access them:
+    The <div> DOM node?
+    The <ul> DOM node?
+    The second <li> (with Pete)? -->
+
+    <!-- <div>Users:</div>
     <ul>
         <li>John</li>
         <li>Pete</li>
@@ -27,18 +26,12 @@ The second <li> (with Pete)? -->
         console.log(ul);
         console.log(liJohn);
         console.log(liPete);
-    </script>
-</body>
+    </script> -->
 
-</html> -->
+    <!-- Bài tập 2 - Select all diagonal cells
+    Write the code to paint all diagonal table cells in red.
+    You'll need to get all diagonal <td> from the <table> and paint them using the code: -->
 
-<!-- Bài tập 2 - Select all diagonal cells
-Write the code to paint all diagonal table cells in red.
-You’ll need to get all diagonal <td> from the <table> and paint them using the code:  -->
-
-<html>
-
-<body>
     <table id="table">
         <tr>
             <td>1-1</td>
@@ -76,7 +69,17 @@ You’ll need to get all diagonal <td> from the <table> and paint them using the
             <td>5-5</td>
         </tr>
     </table>
-
+    <style>
+        table,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            /* width: 200px;
+            height: 35px; */
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
     <script>
         let table = document.getElementById('table');
 
