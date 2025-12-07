@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function section(title) {
+            console.log("\n================================ ");
+            console.log("=== " + title + " ===");
+            console.log("================================\n");
+        }
+    </script>
+</head>
+
+<body>
+    <div id="elem">Hello</div>
+    <script>
+        section("1️⃣ getElementById – tìm 1 element theo id");
+        let elem = document.getElementById('elem');
+        elem.style.background = 'red';
+    </script>
+
+    <!-- <div id="elem"></div>
+    <script>
+        // không nên dùng biến global theo id
+        elem.style.background = 'red'; // ❌ dễ conflict
+    </script> -->
+
+    <ul>
+        <li>The</li>
+        <li>test</li>
+    </ul>
+    <ul>
+        <li>has</li>
+        <li>passed</li>
+    </ul>
+
+    <script>
+        section("2️⃣ querySelectorAll – linh hoạt nhất (CSS selector)");
+        let items = document.querySelectorAll('ul > li:last-child');
+        for (let li of items) {
+            console.log(li); // <li>test</li>, <li>passed</li>
+            console.log(li.innerHTML); // test, passed
+        }
+    </script>
+    <h1>Contents</h1>
+
+    <div class="contents">
+        <ul class="book">
+            <li class="chapter">Chapter 1</li>
+            <li class="chapter">Chapter 2</li>
+        </ul>
+    </div>
+
+    <script>
+        section("3️⃣ querySelector – lấy element đầu tiên");
+
+        let chapter = document.querySelector('.chapter'); // LI, lấy element đầu tiên
+        console.log(chapter); // Chapter 1
+    </script>
+
+    <a href="file.zip">Download</a>
+    <a href="page.html">View</a>
+
+    <script>
+        section("4️⃣ matches(css) – kiểm tra element có khớp selector?");
+        
+        for (let el of document.body.children) {
+            if (el.matches('a[href$="zip"]')) { // kiểm tra nếu href kết thúc bằng "zip"
+                console.log(el.href);
+            }
+        }
+    </script>
+
+    <div class="contents">
+        <ul class="book">
+            <li class="chapter3">Chapter 3</li>
+        </ul>
+    </div>
+
+    <script>
+        section("5️⃣ closest(css) – đi ngược lên cha gần nhất");
+        
+        let chapter3 = document.querySelector('.chapter3');
+
+        chapter3.closest('.book');     // <ul>
+        chapter3.closest('.contents'); // <div>
+        chapter3.closest('h1');        // null
+    </script>
+
+    <table id="table">
+        <input type="radio" value="young">
+        <input type="radio" value="adult">
+    </table>
+
+    <script>
+        section("6️⃣ getElementsBy* – cách cũ (nhưng vẫn gặp)");
+        
+        let inputs = table.getElementsByTagName('input');
+        for (let i of inputs) {
+            console.log(i.value);
+        }
+    </script>
+
+</body>
+
+</html>
