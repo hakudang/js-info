@@ -27,7 +27,6 @@ Khi không thể tìm DOM bằng parent/child/sibling, ta cần TÌM element ở
   elem.style.background = 'red'; // ❌ dễ conflict
 </script>
 ```
-
 👉 Thực tế luôn dùng document.getElementById
 
 ## 2️⃣ querySelectorAll – linh hoạt nhất (CSS selector)
@@ -136,23 +135,36 @@ Cú pháp: document.querySelector(css_selector)
 ## 6️⃣ getElementsBy* – cách cũ (nhưng vẫn gặp)
 **Mục đích**: Tìm tất cả element theo tag name, class name hoặc name attribute.
 **Cú pháp**: 
-element.getElementsByTagName(tag_name)
-element.getElementsByClassName(class_name)
-element.getElementsByName(name_value)
+- element.getElementsByTagName(tag_name)
+- element.getElementsByClassName(class_name)
+- element.getElementsByName(name_value)
 
 Ví dụ:
 ```html
 <table id="table">
-  <input type="radio" value="young">
-  <input type="radio" value="adult">
-</table>
+        <tr>
+            <td>Your age:</td>
+            <td>
+                <label>
+                    <input type="radio" name="age" value="young" checked> less than 18
+                </label>
+                <label>
+                    <input type="radio" name="age" value="mature"> from 18 to 50
+                </label>
+                <label>
+                    <input type="radio" name="age" value="senior"> more than 60
+                </label>
+            </td>
+        </tr>
+    </table>
 
-<script>
-  let inputs = table.getElementsByTagName('input');
-  for (let i of inputs) {
-    console.log(i.value);
-  }
-</script>
+    <script>
+        let inputs = table.getElementsByTagName('input');
+
+        for (let input of inputs) {
+            console.log(input.value + ': ' + input.checked);
+        }
+    </script>
 ```
 
 - ✅ Trả về LIVE collection (DOM đổi → collection đổi)
@@ -166,54 +178,55 @@ Ví dụ:
 
 ## 7️⃣ Live vs Static Collection (rất quan trọng)
 🔁 Live (tự update)
-let divs = document.getElementsByTagName('div');
+
+`let divs = document.getElementsByTagName('div');`
 
 📌 Static (cố định)
-let divs = document.querySelectorAll('div');
 
-<div></div>
-<script>
-  let a = document.getElementsByTagName('div');
-  let b = document.querySelectorAll('div');
-</script>
-<div></div>
+`let divs = document.querySelectorAll('div');`
 
-<script>
-  a.length // 2
-  b.length // 1
-</script>
+```html
+  <div>First div</div>
+
+  <script>
+      let divs = document.querySelectorAll('div');
+      let divsOld = document.getElementsByTagName('div');
+      console.log(divs.length); // 1
+  </script>
+
+  <div>Second div</div>
+
+  <script>
+      console.log(divs.length); // 1
+      console.log(divsOld.length); // 2 (live collection)
+  </script>
+```
 
 ✅ Bảng so sánh nhanh (nên nhớ)
-Method	Tìm theo	Gọi trên element?	Live
-querySelector	CSS	✅	❌
-querySelectorAll	CSS	✅	❌
-getElementById	id	❌	❌
-getElementsByName	name	❌	✅
-getElementsByTagName	tag	✅	✅
-getElementsByClassName	class	✅	✅
+|Method	|Searches by...	|Can call on an element?	|Live|
+|-------|---------------|--------------------------|-----|
+|querySelector	|CSS selector	|✅	|❌|
+|querySelectorAll	|CSS selector	|✅	|❌|
+|getElementById	|id	|❌	|❌|
+|getElementsByName	|name	|❌	|✅|
+|getElementsByTagName	|tag or '*'	|✅	|✅|
+|getElementsByClassName	|class	|✅	|✅|
+
 ✅ Kết luận thực tế (quan trọng)
 
 👉 90% code hiện đại dùng:
-
-document.querySelector()
-document.querySelectorAll()
-
+- document.querySelector()
+- document.querySelectorAll()
 
 👉 getElementById vẫn OK khi:
-
-form
-
-modal
-
-element duy nhất
+- form
+- modal
+- element duy nhất
 
 👉 getElementsBy*:
-
-gặp khi đọc code cũ
-
-hiếm khi viết mới
+- gặp khi đọc code cũ
+- hiếm khi viết mới
 
 🧠 Câu nhớ gọn
-
-querySelector = chuẩn hiện đại
-getElement = legacy / đặc thù*
+- querySelector = chuẩn hiện đại
+- getElement = legacy / đặc thù*

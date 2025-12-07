@@ -11,18 +11,18 @@ Mỗi bài được đặt trong thư mục riêng gồm `index.html` và `main.
 
 
 ## 📁 Folder Structure
-
+```
 js-info/
 │
 ├─ README.md # note toàn bộ
 ├─ part1-language/
-│    ├─ fundamentals/
+│    ├─ 2-fundamentals/
 │    │    ├─ index.html
-│    │    ├─ 121-hello-world/
-│    │    ├─ 122-code-structure.js
+│    │    ├─ 1210-if-condition.js
+│    │    ├─ 1211-logical-operattors.js
 │    │    ├─ ...
 ├─ ...
-
+```
 
 > Note: Folder sẽ được bạn bổ sung dần theo tiến trình học.
 

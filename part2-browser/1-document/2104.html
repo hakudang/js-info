@@ -66,7 +66,7 @@
 
     <script>
         section("4️⃣ matches(css) – kiểm tra element có khớp selector?");
-        
+
         for (let el of document.body.children) {
             if (el.matches('a[href$="zip"]')) { // kiểm tra nếu href kết thúc bằng "zip"
                 console.log(el.href);
@@ -82,26 +82,58 @@
 
     <script>
         section("5️⃣ closest(css) – đi ngược lên cha gần nhất");
-        
+
         let chapter3 = document.querySelector('.chapter3');
 
-        chapter3.closest('.book');     // <ul>
-        chapter3.closest('.contents'); // <div>
-        chapter3.closest('h1');        // null
+        let book = chapter3.closest('.book');     // <ul>
+        let contents = chapter3.closest('.contents'); // <div>
+        let h1 = chapter3.closest('h1');        // null
+
+        console.log(book);
+        console.log(contents);
+        console.log(h1);
     </script>
 
     <table id="table">
-        <input type="radio" value="young">
-        <input type="radio" value="adult">
+        <tr>
+            <td>Your age:</td>
+            <td>
+                <label>
+                    <input type="radio" name="age" value="young" checked> less than 18
+                </label>
+                <label>
+                    <input type="radio" name="age" value="mature"> from 18 to 50
+                </label>
+                <label>
+                    <input type="radio" name="age" value="senior"> more than 60
+                </label>
+            </td>
+        </tr>
     </table>
 
     <script>
         section("6️⃣ getElementsBy* – cách cũ (nhưng vẫn gặp)");
-        
+
         let inputs = table.getElementsByTagName('input');
-        for (let i of inputs) {
-            console.log(i.value);
+
+        for (let input of inputs) {
+            console.log(input.value + ': ' + input.checked);
         }
+    </script>
+
+    <div>First div</div>
+
+    <script>
+        let divs = document.querySelectorAll('div');
+        let divsOld = document.getElementsByTagName('div');
+        console.log(divs.length); // 1
+    </script>
+
+    <div>Second div</div>
+
+    <script>
+        console.log(divs.length); // 1
+        console.log(divsOld.length); // 2 (live collection)
     </script>
 
 </body>
