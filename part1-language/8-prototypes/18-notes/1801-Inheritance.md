@@ -175,3 +175,178 @@ Chúng chỉ lấy own properties, không đụng vào prototype.
 - `this` luôn là object trước dấu chấm.
 - `for…in` liệt kê cả thuộc tính kế thừa; `Object.keys/values` không liệt kê.
 - Prototype chain có thể dài, nhưng không được tạo vòng.
+
+## 11. Bài tập
+
+### Bài 1 : Working with prototype
+
+Dưới đây là đoạn code tạo hai object rồi thay đổi chúng.
+Những giá trị nào sẽ được hiển thị trong quá trình chạy?
+```js
+let animal = {
+  jumps: null
+};
+let rabbit = {
+  __proto__: animal,
+  jumps: true
+};
+
+alert( rabbit.jumps ); // ? (1)
+
+delete rabbit.jumps;
+
+alert( rabbit.jumps ); // ? (2) 
+
+delete animal.jumps;
+
+alert( rabbit.jumps ); // ? (3)
+```
+
+Bạn cần đưa ra 3 câu trả lời.
+
+#### Solution:
+
+(1) true – vì rabbit có thuộc tính jumps riêng.
+
+(2) null – sau khi xóa thuộc tính jumps của rabbit, JS tìm trong prototype animal, thấy giá trị null.
+
+(3) undefined – sau khi xóa thuộc tính jumps của animal, JS không tìm thấy thuộc tính này ở đâu nữa.
+
+### Bài 2 : Searching algorithm
+
+Bài tập gồm hai phần.
+
+Cho các object sau:
+```js
+let head = {
+  glasses: 1
+};
+
+let table = {
+  pen: 3
+};
+
+let bed = {
+  sheet: 1,
+  pillow: 2
+};
+
+let pockets = {
+  money: 2000
+};
+```
+
+Dùng __proto__ để gán prototype sao cho đường tìm kiếm thuộc tính sẽ đi theo thứ tự:
+pockets → bed → table → head.
+
+Ví dụ:
+pockets.pen phải trả về 3 (tìm thấy ở table)
+bed.glasses phải trả về 1 (tìm thấy ở head)
+
+Trả lời câu hỏi:
+Lấy glasses bằng pockets.glasses nhanh hơn hay head.glasses nhanh hơn?
+(Nếu cần thì benchmark.)
+
+#### Solution 1:
+```js
+let head = {
+    glasses: 1
+};
+
+let table = {
+    pen: 3,
+    __proto__: head // table.[[Prototype]] = head
+};
+
+let bed = {
+    sheet: 1,
+    pillow: 2,
+    __proto__: table // bed.[[Prototype]] = table
+};
+
+let pockets = {
+    money: 2000,
+    __proto__: bed // pockets.[[Prototype]] = bed
+};
+```
+#### Solution 2:
+`pockets.glasses` và `head.glasses` đều mất cùng thời gian để truy cập, vì cả hai đều phải đi qua cùng một chuỗi prototype.
+
+### Bài tập 3 : Where does it write?
+
+Ta có rabbit kế thừa từ animal.
+
+Khi ta gọi rabbit.eat(), object nào sẽ nhận thuộc tính full:
+animal hay rabbit?
+```js
+let animal = {
+  eat() {
+    this.full = true;
+  }
+};
+
+let rabbit = {
+  __proto__: animal
+};
+
+rabbit.eat();
+```
+
+#### Solution:
+`this` trong phương thức eat() tham chiếu đến object gọi phương thức, tức là rabbit.
+Do đó, thuộc tính full sẽ được thêm vào object rabbit.
+
+### Bài tập 4 : Why are both hamsters full?
+
+Ta có hai con hamster: speedy và lazy, cả hai đều kế thừa từ object hamster.
+
+Khi ta cho một con ăn, con còn lại cũng bị đầy bụng. Tại sao?
+Làm sao sửa lỗi này?
+```js
+let hamster = {
+  stomach: [],
+
+  eat(food) {
+    this.stomach.push(food);
+  }
+};
+
+let speedy = {
+  __proto__: hamster
+};
+
+let lazy = {
+  __proto__: hamster
+};
+
+// This one found the food
+speedy.eat("apple");
+alert( speedy.stomach ); // apple
+
+// This one also has it, why? fix please.
+alert( lazy.stomach ); // apple
+```
+
+#### Solution :
+Khi ta cho một con ăn, con còn lại cũng bị đầy bụng vì cả hai con hamster đều chia sẻ cùng một thuộc tính stomach trong prototype hamster. Do đó, khi một con thêm thức ăn vào stomach, con còn lại cũng thấy thay đổi đó.
+
+Để sửa lỗi này, mỗi con hamster nên có thuộc tính stomach riêng, không chia sẻ với prototype. Ví dụ:
+```js
+let hamster = {
+  stomach: [],
+
+  eat(food) {
+    this.stomach.push(food);
+  }
+};
+
+let speedy = {
+  __proto__: hamster,
+  stomach: []
+};
+
+let lazy = {
+  __proto__: hamster,
+  stomach: []
+};
+```
