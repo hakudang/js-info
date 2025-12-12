@@ -3,6 +3,9 @@
  */
 
 'use strict';
+// tiêu đề trang
+document.write('<h2>f.prototypes trong JavaScript</h2>');
+
 function section(title) {
     console.log('=== ' + title + ' ===');
 }
