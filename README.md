@@ -59,3 +59,16 @@ html
 main.js
 // Code thực hành
 console.log("Hello JS Lab");
+
+
+## Qui ước Git commit message
+
+```bash
+feat(docs): add DB definition draft
+fix(docs): update validation rules
+docs: refine use case flow
+```
+feat = 新規追加  
+fix = 修正
+docs = ドキュメント改善のみ
+---
