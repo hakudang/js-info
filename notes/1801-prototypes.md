@@ -1,13 +1,27 @@
-# Prototypal Inheritance
+# Prototype Inheritance
 
 Trong lập trình, ta thường muốn tạo một object mới dựa trên object có sẵn, nhưng không muốn copy lại code → chỉ muốn mở rộng.
-JavaScript hỗ trợ điều này thông qua Prototypal Inheritance.
+JavaScript hỗ trợ điều này thông qua Prototype Inheritance.
 
 ## 1. [[Prototype]] – thuộc tính ẩn của mọi object
 
 Mỗi object trong JS có một thuộc tính ẩn tên [[Prototype]], trỏ đến một object khác, hoặc null.
 
 Khi bạn truy cập một thuộc tính mà object không có → JavaScript tự động tìm trong prototype.
+
+```mermaid
+flowchart LR
+    subgraph Instance
+        A[obj]
+    end
+    subgraph Prototypes
+        B[[Object.Prototype<br/>...properties...]]
+        C[[null]]
+    end
+
+    A -- [[Prototype]] --> B
+    B -- [[Prototype]] --> C
+```
 
 ## 2. Thiết lập prototype bằng __proto__
 ```js
@@ -20,12 +34,25 @@ let rabbit = {
 
 rabbit.__proto__ = animal; // sets rabbit.[[Prototype]] = animal
 ```
+```mermaid
+flowchart LR
+    subgraph Instance
+        A[rabbit<br/>jumps: true]
+    end
+    subgraph Prototypes
+        B[animal<br/>eats: true]
+        C[Object.prototype<br/>toString, hasOwnProperty, ...]
+    end
 
+    A -- [[Prototype]] --> B
+    B -- [[Prototype]] --> C
+```
 Giờ rabbit sẽ tìm thuộc tính trong animal nếu không có:
 ```js
 alert( rabbit.eats ); // true
 alert( rabbit.jumps ); // true
 ```
+
 ## 3. Prototype dùng để đọc, không dùng để ghi
 
 Nếu kế thừa phương thức:
@@ -44,7 +71,6 @@ let rabbit = {
 
 rabbit.walk(); // Animal walk
 ```
-
 Nhưng nếu bạn ghi đè:
 ```js
 rabbit.walk = function() {
@@ -53,8 +79,20 @@ rabbit.walk = function() {
 
 rabbit.walk(); // Rabbit! Bounce-bounce!
 ```
-
 → Việc ghi không chạm vào prototype.
+```mermaid
+flowchart LR
+    subgraph Instance
+        A[rabbit<br/>jumps: true<br/>walk: function]
+    end
+    subgraph Prototypes
+        B[animal<br/>eats: true<br/>walk]
+        C[Object.prototype<br/>toString:function<br/> hasOwnProperty:function, ...]
+    end
+
+    A -- [[Prototype]] --> B
+    B -- [[Prototype]] --> C
+```
 
 ## 4. Prototype chain – chuỗi kế thừa
 
@@ -70,6 +108,21 @@ alert(longEar.jumps); // true
 
 Tìm thuộc tính → JS lần lượt tìm:
 `longEar → rabbit → animal → Object.prototype → null.`
+```mermaid
+flowchart LR
+    subgraph Instance
+        A[longEar<br/>earLength: 10]
+    end
+    subgraph Prototypes
+        B[rabbit<br/>jumps: true]
+        C[animal<br/>eats: true<br/>walk]
+        D[Object.prototype<br/>toString:function<br/> hasOwnProperty:function, ...]
+    end
+
+    A -- [[Prototype]] --> B
+    B -- [[Prototype]] --> C
+    C -- [[Prototype]] --> D
+```
 
 ## 5. Quy tắc & giới hạn
 

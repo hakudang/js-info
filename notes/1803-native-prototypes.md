@@ -1,7 +1,6 @@
 # Native Prototypes
-
-Native prototypes là nền tảng của toàn bộ hệ thống kế thừa trong JavaScript.
-Tất cả các built-in constructor (Object, Array, Function, String, Number, Date…) đều lưu các phương thức của mình bên trong F.prototype.
+Native prototypes là gì ? 
+Native prototypes là các prototype mặc định được cung cấp bởi JavaScript cho các kiểu dữ liệu built-in như Object, Array, Function, String, Number, Boolean, v.v. Chúng chứa các phương thức và thuộc tính mà tất cả các instance của các kiểu dữ liệu này có thể sử dụng thông qua cơ chế kế thừa prototype.
 
 ## 1. Object.prototype – mọi object đều kế thừa từ đây
 
@@ -77,7 +76,7 @@ flowchart TD
     subgraph Prototypes
         B[[Array.prototype<br/>push, pop, join, ...]]
         C[[Object.prototype<br/>toString, constructor, ...]]
-        N((null))
+        N[[null]]
     end
 
     subgraph Constructors
@@ -118,7 +117,7 @@ flowchart TD
     subgraph Prototypes
         B[[Function.prototype<br/>call, apply, bind, ...]]
         C[[Object.prototype<br/>toString, constructor, ...]]
-        N((null))
+        N[[null]]
     end
 
     subgraph Constructors
@@ -174,7 +173,7 @@ flowchart TD
         H[[Number.prototype<br/>toFixed, toExponential, ...]]
         I[[Boolean.prototype<br/>valueOf, toString, ...]]
         J[[Object.prototype<br/>toString, constructor, ...]]
-        N((null))
+        N[[null]]
     end
 
     %% Primitive to WrapperObject
