@@ -79,7 +79,7 @@ console.log( map1.get(key1) ); // some value
 // Giải pháp 2
 section('Giải pháp 2: Object.create(null)' );
 
-let obj2 = Object.create(null);
+let obj2 = Object.create(null); // object không có prototype, không kế thừa từ Object.prototype
 let key2 = "__proto__";
 obj2[key2] = "some value";
 console.log(obj2[key2]); // some value
