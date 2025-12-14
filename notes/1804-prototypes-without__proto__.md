@@ -51,6 +51,7 @@ let clone = Object.create(
 
 → Bản sao chính xác: đủ enumerable/non-enumerable, data & getter/setter, và đúng `[[Prototype]]`.
 
+
 ## 4. Lịch sử ngắn gọn (vì sao có nhiều cách?)
 
 Từ đầu: dùng `F.prototype` (constructor function).
@@ -71,6 +72,7 @@ Thay đổi prototype “on-the-fly” bằng `Object.setPrototypeOf` hoặc `ob
 ## 6. “Very plain” objects – object không có prototype
 
 Dùng object như dictionary lưu key do người dùng nhập có thể dính bẫy `__proto__`.
+Dùng Object, nếu khai báo thuộc tính với key "__proto__", ta sẽ không lưu được giá trị mong muốn.
 
 Vấn đề với object thường
 ```js
