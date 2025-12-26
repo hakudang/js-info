@@ -106,3 +106,45 @@ userGS.name = "Peter";
 console.log(userGS.name); // Peter
 // userGS.name = "Al"; // Name is too short.
 userGS.name = ""; // Name is too short.
+
+// 8️⃣ Computed method names
+section("8️⃣ Computed method names");
+
+class UserComputed {
+    ["say" + "Hi" + 2]() {
+        console.log("Hello");
+    }
+}
+new UserComputed().sayHi2(); // Hello
+
+// 9️⃣ Class Fields (thuộc tính khai báo trực tiếp)
+section("9️⃣ Class Fields (thuộc tính khai báo trực tiếp)");
+
+class UserWithFields {
+    name = "John";
+    sayHi() {
+        console.log(`Hello, ${this.name}!`);
+    }
+}
+
+new UserWithFields().sayHi(); // Hello, John!
+
+let userWithFields = new UserWithFields();
+console.log( userWithFields.name ); // John
+
+// 10️⃣ Bound methods với class fields (rất thực tế)
+section("10️⃣ Bound methods với class fields (rất thực tế)");
+// Vấn đề mất this
+class Button {
+    constructor(value) {
+        this.value = value;
+    }
+    // click() {
+    click = () => {
+        console.log(this.value); 
+        // this bị mất vì cách gọi setTimeout(button.click, 1000);
+    }
+}
+let button = new Button("hello");
+setTimeout(button.click, 1000); // undefined
+
