@@ -182,7 +182,8 @@ Vấn đề
 ```js
 arguments.join(); // ❌ Error
 ```
-Vì arguments không phải array thật
+
+
 
 Giải pháp: mượn join
 ```js
