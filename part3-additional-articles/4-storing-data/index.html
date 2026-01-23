@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="style.css">
     <title>LocalStorage</title>
 </head>
-    
+
 <body>
     <div class="wrapper">
         <div class="task-input">
@@ -20,11 +20,17 @@
             <button class="clear-btn">Clear all</button>
         </div>
 
-        <hr>
-
         <ul class="task-box"></ul>
-    </div>
 
+        <!-- task list counter -->
+        <div class="counter-container">
+            <div class="task-counters">
+                Total: <span id="total-count">0</span> |
+                Completed: <span id="completed-count">0</span> |
+                Pending: <span id="pending-count">0</span>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
