@@ -38,15 +38,27 @@ function showTodo(filter) {
         });
     }
     taskBox.innerHTML = liTag || `<span>You don't have any task here</span>`;
+    
+    // active/deactive clear-btn và xử lý overflow
     let checkTask = taskBox.querySelectorAll(".task");
     !checkTask.length ? clearAll.classList.remove("active") : clearAll.classList.add("active");
     taskBox.offsetHeight >= 300 ? taskBox.classList.add("overflow") : taskBox.classList.remove("overflow");
     
+    // cập nhật bộ đếm
     updateCounters();
 }
 
 showTodo('all');
 
+function showMenu(selectedTask) {
+    let menuDiv = selectedTask.parentElement.lastElementChild;
+    menuDiv.classList.add('show');
+    document.addEventListener('click', e => {
+        if (e.target != selectedTask) {
+            menuDiv.classList.remove('show');
+        }
+    });
+}
 taskInput.addEventListener('keyup', e => {
     let input = taskInput.value.trim();
     let logName;
@@ -87,6 +99,7 @@ clearAll.addEventListener('click', () => {
 
 function updateStatus(selectedTask) {
     let taskName = selectedTask.parentElement.lastElementChild;
+
     if (selectedTask.checked) {
         taskName.classList.add('checked');
         todos[selectedTask.id].status = "completed";

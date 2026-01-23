@@ -1,3 +1,5 @@
+
+
 * {
     margin: 0;
     padding: 0;
@@ -142,14 +144,57 @@ li {
     text-decoration: line-through;
 }
 
+/* task-menu */
+
+.task-box .settings{
+  position: relative;
+}
+.settings :where(i, li){
+  cursor: pointer;
+}
+.settings .task-menu{
+  z-index: 10;
+  right: -5px;
+  bottom: -65px;
+  padding: 5px 0;
+  background: #fff;
+  position: absolute;
+  border-radius: 4px;
+  transform: scale(0); /* ẩn menu */
+  transform-origin: top right;
+  box-shadow: 0 0 6px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease; /* hiệu ứng hiển thị menu trong 0.2s */
+}
+.task-box .task:last-child .task-menu{
+  bottom: 0;
+  transform-origin: bottom right;
+}
+.task-box .task:first-child .task-menu{
+  bottom: -65px;
+  transform-origin: top right;
+}
+.task-menu.show{ 
+  transform: scale(1); /* hiện menu */
+}
 .task-menu li{
   height: 25px;
-  font-size: 15px;
+  font-size: 16px;
   margin-bottom: 2px;
-  padding: 12px 15px;
+  padding: 17px 15px;
   cursor: pointer;
   justify-content: flex-start;
 }
+.task-menu li:last-child{
+  margin-bottom: 0;
+}
+.settings li:hover{
+  background: #f5f5f5;
+}
+.settings li i{
+  padding-right: 8px;
+}
+
+/*  */
 
 .counter-container {
     padding: 18px 25px;
