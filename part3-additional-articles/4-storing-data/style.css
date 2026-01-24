@@ -1,10 +1,10 @@
-
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+/* Import Google Font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -147,21 +147,21 @@ li {
 /* task-menu */
 
 .task-box .settings{
-  position: relative;
+  position: relative; /* để menu con được định vị tuyệt đối so với phần tử cha */
 }
 .settings :where(i, li){
   cursor: pointer;
 }
 .settings .task-menu{
-  z-index: 10;
-  right: -5px;
+  z-index: 10; /* hiển thị menu lên trên các phần tử khác */
+  right: -5px; 
   bottom: -65px;
   padding: 5px 0;
   background: #fff;
   position: absolute;
   border-radius: 4px;
   transform: scale(0); /* ẩn menu */
-  transform-origin: top right;
+  transform-origin: top right; /* điểm gốc để phóng to/thu nhỏ */
   box-shadow: 0 0 6px rgba(0,0,0,0.15);
   transition: transform 0.2s ease; /* hiệu ứng hiển thị menu trong 0.2s */
 }
