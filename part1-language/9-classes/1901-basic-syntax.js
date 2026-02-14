@@ -89,9 +89,9 @@ section("7️⃣ Getter và Setter trong class");
 class UserWithGetterSetter {
     constructor(name) {
         this.name = name;
-    }
+    }  
     get name() {
-        return this._name;
+        return this._name; // dùng tên biến khác name để tránh gọi đệ quy vô hạn khi truy cập this.name trong getter và setter
     }
     set name(value) {
         if (value.length < 4) {
