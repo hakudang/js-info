@@ -89,7 +89,7 @@ section("7️⃣ Getter và Setter trong class");
 class UserWithGetterSetter {
     constructor(name) {
         this.name = name;
-    }  
+    }
     get name() {
         return this._name; // dùng tên biến khác name để tránh gọi đệ quy vô hạn khi truy cập this.name trong getter và setter
     }
@@ -130,21 +130,37 @@ class UserWithFields {
 new UserWithFields().sayHi(); // Hello, John!
 
 let userWithFields = new UserWithFields();
-console.log( userWithFields.name ); // John
+console.log(userWithFields.name); // John
 
 // 10️⃣ Bound methods với class fields (rất thực tế)
 section("10️⃣ Bound methods với class fields (rất thực tế)");
 // Vấn đề mất this
+
+class ButtonNoThis {
+    constructor(value) {
+        this.value = value;
+    }
+    // click() {
+    click() {
+        console.log(this.value);
+        // this bị mất vì cách gọi setTimeout(button.click, 1000);
+    }
+}
+let buttonNoThis = new ButtonNoThis("hello");
+// setTimeout(buttonNoThis.click, 1000); // undefined
+setTimeout(buttonNoThis.click.bind(buttonNoThis), 1000); 
+
+// Dùng arrow function để giữ this
 class Button {
     constructor(value) {
         this.value = value;
     }
     // click() {
     click = () => {
-        console.log(this.value); 
+        console.log(this.value);
         // this bị mất vì cách gọi setTimeout(button.click, 1000);
     }
 }
 let button = new Button("hello");
-setTimeout(button.click, 1000); // undefined
+setTimeout(button.click, 1000); 
 

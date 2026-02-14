@@ -243,6 +243,7 @@ class Button {
 }
 
 let button = new Button("hello");
+// this trong click() phụ thuộc cách gọi, không phải object tạo ra nó
 setTimeout(button.click, 1000); // undefined
 ```
 
@@ -258,6 +259,7 @@ class Button {
 }
 
 let button = new Button("hello");
+// this trong arrow function luôn bind đúng object tạo ra nó
 setTimeout(button.click, 1000); // hello
 ```
 
