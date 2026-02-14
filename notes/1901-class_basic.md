@@ -22,7 +22,8 @@ class MyClass {
 }
 ```
 - Dùng new MyClass() để tạo object
-- constructor() tự động chạy khi new
+- constructor() tự động chạy khi tạo object bằng New, dùng để khởi tạo dữ liệu ban đầu, chuẩn bị object trước khi dùng.
+
 
 **Ví dụ cơ bản (GIỮ NGUYÊN)**
 ```js
